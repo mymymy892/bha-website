@@ -384,7 +384,7 @@ footer{background:var(--navy-deep);padding:48px 0 24px;color:rgba(255,255,255,0.
     <h2>Enrollment Inquiry</h2>
     <p class="form-intro">Fill out the form below and we will reach out within 24 hours to confirm your spot, answer questions, and schedule your tour.</p>
 
-    <form id="enrollForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+    <form id="enrollForm" action="https://formspree.io/f/mdawwjze" method="POST">
       <input type="hidden" name="_subject" value="New BHA Enrollment Inquiry">
 
       <!-- PARENT INFO -->
@@ -598,17 +598,31 @@ function toggleCurrentCenter(val) {
   group.classList.toggle('hidden', !val.startsWith('Yes'));
 }
 
-document.getElementById('enrollForm').addEventListener('submit', async function(e) {
+document.getElementById('enrollForm').addEventListener('submit', function(e) {
   e.preventDefault();
-  const btn = document.getElementById('submitBtn');
+  var btn = document.getElementById('submitBtn');
   btn.disabled = true;
-  btn.innerHTML = 'Sending... <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>';
-  try {
-    const res = await fetch(this.action, {
-      method: 'POST',
-      body: new FormData(this),
-      headers: { 'Accept': 'application/json' }
-    });
+  btn.textContent = 'Sending...';
+  var form = document.getElementById('enrollForm');
+  fetch('https://formspree.io/f/mdawwjze', {
+    method: 'POST',
+    body: new FormData(form),
+    headers: {'Accept': 'application/json'}
+  }).then(function(r) {
+    if (r.ok) {
+      form.style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Submit Enrollment Inquiry';
+      alert('Something went wrong. Please try again or call us at (469) 807-1221.');
+    }
+  }).catch(function() {
+    btn.disabled = false;
+    btn.textContent = 'Submit Enrollment Inquiry';
+    alert('Something went wrong. Please try again or call us at (469) 807-1221.');
+  });
+});
     if (res.ok) {
       this.style.display = 'none';
       document.getElementById('successMsg').style.display = 'block';

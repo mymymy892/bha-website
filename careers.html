@@ -335,7 +335,7 @@ footer{background:var(--navy-deep);padding:64px 0 28px;color:rgba(255,255,255,0.
     <p class="section-desc">Fill out the form below and we will be in touch. For questions, email <a href="mailto:info@benevolenthouseacademy.org" style="color:var(--gold);text-decoration:none;font-weight:600">info@benevolenthouseacademy.org</a> or call <a href="tel:4698071221" style="color:var(--gold);text-decoration:none;font-weight:600">(469) 807-1221</a>.</p>
   </div>
   <div class="form-section">
-    <form id="careerForm">
+    <form id="careerForm" action="https://formspree.io/f/xgonnqyd" method="POST">
       <input type="hidden" name="_subject" value="New BHA Career Interest">
 
       <div class="form-row">
@@ -449,14 +449,30 @@ nl.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>nl.classList.
 
 document.getElementById('careerForm').addEventListener('submit', function(e) {
   e.preventDefault();
-  const btn = document.getElementById('submitBtn');
+  var btn = document.getElementById('submitBtn');
   btn.disabled = true;
   btn.textContent = 'Sending...';
-  // Simulate submission (replace with Formspree endpoint later)
-  setTimeout(function() {
-    document.getElementById('careerForm').style.display = 'none';
-    document.getElementById('successMsg').style.display = 'block';
-    window.scrollTo({top: document.getElementById('apply').offsetTop - 100, behavior: 'smooth'});
+  var form = document.getElementById('careerForm');
+  fetch('https://formspree.io/f/xgonnqyd', {
+    method: 'POST',
+    body: new FormData(form),
+    headers: {'Accept': 'application/json'}
+  }).then(function(r) {
+    if (r.ok) {
+      form.style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+      window.scrollTo({top: document.getElementById('apply').offsetTop - 100, behavior: 'smooth'});
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Submit Application';
+      alert('Something went wrong. Please try again or call us at (469) 807-1221.');
+    }
+  }).catch(function() {
+    btn.disabled = false;
+    btn.textContent = 'Submit Application';
+    alert('Something went wrong. Please try again or call us at (469) 807-1221.');
+  });
+});
   }, 1500);
 });
 </script>
