@@ -495,12 +495,12 @@ footer{background:var(--navy-deep);padding:64px 0 28px;color:rgba(255,255,255,0.
 </div>
 <div class="footer-col">
 <h4>Programs</h4>
-<a href="programs.html">Nursery (6 wks &ndash; 11 mo)</a>
-<a href="programs.html">Young Toddlers (12 &ndash; 17 mo)</a>
-<a href="programs.html">Toddlers (18 mo &ndash; 2 yrs)</a>
-<a href="programs.html">Preschool (3 yrs)</a>
-<a href="programs.html">Pre-K (4 yrs)</a>
-<a href="programs.html">School-Age (K &ndash; 5th)</a>
+<a href="programs.html#nursery">Nursery (6 wks &ndash; 11 mo)</a>
+<a href="programs.html#young-toddler">Young Toddlers (12 &ndash; 17 mo)</a>
+<a href="programs.html#toddler">Toddlers (18 mo &ndash; 2 yrs)</a>
+<a href="programs.html#preschool">Preschool (3 yrs)</a>
+<a href="programs.html#prek">Pre-K (4 yrs)</a>
+<a href="programs.html#school-age">School-Age (K &ndash; 5th)</a>
 </div>
 <div class="footer-col">
 <h4>Contact Us</h4>
@@ -542,6 +542,10 @@ document.querySelectorAll(".modal-overlay").forEach(function(m){
     }
   });
 });
+var hash=window.location.hash.replace("#","");
+if(hash && document.getElementById("modal-"+hash)){
+  setTimeout(function(){openModal(hash);},500);
+}
 </script>
 </body>
 </html>
