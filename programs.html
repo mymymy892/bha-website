@@ -540,10 +540,13 @@ document.querySelectorAll(".modal-overlay").forEach(function(m){
   });
 });
 // Auto-open modal if URL has a hash matching a program
-(function(){
+function openFromHash(){
   var h=window.location.hash.replace("#","");
   if(h&&document.getElementById("modal-"+h)){openModal(h);}
-})();
+}
+window.addEventListener("load",openFromHash);
+window.addEventListener("hashchange",openFromHash);
+openFromHash();
 </script>
 </body>
 </html>
