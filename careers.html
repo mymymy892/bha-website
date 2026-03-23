@@ -100,9 +100,9 @@ nav.scrolled{box-shadow:var(--shadow-sm)}
 .req{color:#c0392b;font-size:13px}
 .btn-submit{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--navy);color:white;padding:16px 28px;border-radius:10px;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s}
 .btn-submit:hover{background:var(--navy-mid);transform:translateY(-1px);box-shadow:0 8px 20px rgba(27,58,92,0.2)}
-.success-msg{display:none;text-align:center;padding:40px;background:var(--sage-light);border-radius:var(--r-md)}
-.success-msg h3{font-family:'DM Serif Display',serif;font-size:24px;color:var(--navy);margin-bottom:8px}
-.success-msg p{color:var(--text-soft);font-size:15px}
+.success-msg{display:none;text-align:center;padding:48px 24px;background:var(--sage-light);border-radius:var(--r-lg)}
+.success-msg h3{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);margin-bottom:10px}
+.success-msg p{color:var(--text-soft);font-size:15px;line-height:1.7;max-width:400px;margin:0 auto 8px}
 
 /* FOOTER */
 footer{background:var(--navy-deep);padding:64px 0 28px;color:rgba(255,255,255,0.55)}
@@ -390,8 +390,10 @@ footer{background:var(--navy-deep);padding:64px 0 28px;color:rgba(255,255,255,0.
     </form>
 
     <div class="success-msg" id="successMsg">
-      <h3>Thank You!</h3>
+      <div style="font-size:56px;margin-bottom:16px">&#x1F91D;</div>
+      <h3>Thank You! We Got It.</h3>
       <p>We received your application and will be in touch soon. We look forward to getting to know you.</p>
+      <p style="font-size:13px;margin-top:8px"><a href="index.html" style="color:var(--gold);font-weight:600;text-decoration:none">Back to Home &rarr;</a></p>
     </div>
   </div>
 </div>
