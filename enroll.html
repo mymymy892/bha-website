@@ -633,4 +633,14 @@ document.getElementById('enrollForm').addEventListener('submit', function(e) {
     } else {
       alert('Something went wrong. Please try again or call us at (469) 807-1221.');
       btn.disabled = false;
- 
+      btn.textContent = 'Submit Enrollment Inquiry';
+    }
+  }).catch(function() {
+    alert('Something went wrong. Please try again or call us at (469) 807-1221.');
+    btn.disabled = false;
+    btn.textContent = 'Submit Enrollment Inquiry';
+  });
+});
+</script>
+</body>
+</html>
