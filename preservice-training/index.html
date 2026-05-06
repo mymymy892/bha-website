@@ -13,6 +13,9 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#FAF8F
 /* Header - matched to logo blue #052F59 */
 .hdr{background:linear-gradient(135deg,#031D38 0%,#052F59 40%,#0A3A6B 100%);color:#fff;padding:12px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
 .hdr-logo{height:48px;width:48px;object-fit:contain;flex-shrink:0}
+.hdr-logo-clickable{cursor:pointer;transition:transform .15s,opacity .15s;border-radius:8px}
+.hdr-logo-clickable:hover{transform:scale(1.06);opacity:.9}
+.hdr-logo-clickable:focus{outline:2px solid #C5960C;outline-offset:2px}
 .hdr h1{font-size:18px;font-weight:700;letter-spacing:.3px}.hdr-sub{font-size:11px;opacity:.7;display:block;margin-top:1px}
 .hdr-right{margin-left:auto;display:flex;align-items:center;gap:12px}
 .hdr-name{font-size:13px;color:#E3B332}
@@ -546,69 +549,157 @@ function RevealBox({label,children}){
 
 
 // ======== Read Aloud (Natural female voice with quality preference) ========
+//
+// iOS Safari quirk: speechSynthesis.getVoices() returns an empty array on
+// initial page load, then populates a few moments later (or after the first
+// user gesture). If we pick a voice while the list is empty, we get the
+// system default which on iOS is robotic. To avoid this:
+//   1. We wait for voices to populate before speaking
+//   2. We re-pick on every speak() call, never cache
+//   3. We prioritize iOS-specific known-good voice names
+//   4. We log voice lists in dev (useful if Tanya needs to debug)
+
+// Module-level cache of voices, refreshed by onvoiceschanged
+let _cachedVoices = [];
+function refreshVoiceCache(){
+  if(typeof window==="undefined"||!window.speechSynthesis)return;
+  const v=window.speechSynthesis.getVoices();
+  if(v&&v.length)_cachedVoices=v;
+}
+
 function pickBestVoice(){
-  if(!window.speechSynthesis)return null;
-  const voices=window.speechSynthesis.getVoices();
+  if(typeof window==="undefined"||!window.speechSynthesis)return null;
+  // Always check fresh (in case voices loaded since cache)
+  let voices=window.speechSynthesis.getVoices();
+  if(!voices||!voices.length)voices=_cachedVoices;
   if(!voices||!voices.length)return null;
-  // Prefer high-quality natural neural voices first (in this priority order)
+
+  // Tiered preferences. First match wins.
   const tieredPrefs=[
-    // Tier 1: Premium neural/natural voices (Google, Microsoft Online, Apple Premium)
-    [/google\s*us\s*english/i,/google\s*uk\s*english\s*female/i,/microsoft\s*aria/i,/microsoft\s*jenny/i,/microsoft\s*sonia/i,/natural/i,/neural/i,/premium/i,/enhanced/i],
-    // Tier 2: Apple/iOS quality female voices
-    [/samantha/i,/karen/i,/moira/i,/tessa/i,/serena/i,/allison/i,/ava/i,/susan/i,/victoria/i,/fiona/i],
-    // Tier 3: Microsoft/Windows female voices
+    // Tier 1: Apple Premium voices on iOS (these are the actually-good ones)
+    // Apple labels enhanced voices with "(Enhanced)" or "Premium" in the name.
+    [/samantha.*enhanced/i,/samantha.*premium/i,/ava.*enhanced/i,/ava.*premium/i,/allison.*enhanced/i,/allison.*premium/i,/susan.*enhanced/i,/zoe.*premium/i,/karen.*enhanced/i],
+    // Tier 2: Premium neural voices on Chrome/Edge desktop and Android
+    [/google\s*us\s*english/i,/google\s*uk\s*english\s*female/i,/microsoft\s*aria/i,/microsoft\s*jenny/i,/microsoft\s*sonia/i,/microsoft\s*natasha/i,/natural/i,/neural/i,/online.*female/i],
+    // Tier 3: Apple/iOS standard female voices (decent quality)
+    [/^samantha/i,/^karen/i,/^moira/i,/^tessa/i,/^serena/i,/^allison/i,/^ava/i,/^susan/i,/^victoria/i,/^fiona/i,/^zoe/i,/^nicky/i],
+    // Tier 4: Microsoft/Windows female voices
     [/zira/i,/hazel/i,/eva/i,/heera/i,/catherine/i],
-    // Tier 4: Other named female voices
+    // Tier 5: Other female voices
     [/jenny/i,/aria/i,/sara/i,/joanna/i,/salli/i,/kimberly/i,/kendra/i,/ivy/i,/female/i]
   ];
-  // Helper: prefer en-US, then any English
+
   function pickByLang(matches){
-    return matches.find(v=>v.lang&&v.lang.toLowerCase().startsWith("en-us"))
-      ||matches.find(v=>v.lang&&v.lang.toLowerCase().startsWith("en"))
+    return matches.find(function(v){return v.lang&&v.lang.toLowerCase().indexOf("en-us")===0})
+      ||matches.find(function(v){return v.lang&&v.lang.toLowerCase().indexOf("en")===0})
       ||matches[0];
   }
-  for(const tier of tieredPrefs){
-    const matches=voices.filter(v=>tier.some(re=>re.test(v.name)));
+
+  for(let t=0;t<tieredPrefs.length;t++){
+    const tier=tieredPrefs[t];
+    const matches=voices.filter(function(v){return tier.some(function(re){return re.test(v.name)})});
     if(matches.length){
       const picked=pickByLang(matches);
       if(picked)return picked;
     }
   }
+
   // Last resort: any English voice that does NOT match obviously male names
-  const maleNames=/male|david|james|mark|daniel|alex|fred|tom|george|paul|guy|ryan|brian|aaron|matthew|kevin/i;
-  const enFallback=voices.filter(v=>v.lang&&v.lang.toLowerCase().startsWith("en")&&!maleNames.test(v.name));
+  const maleNames=/^(male|david|james|mark|daniel|alex|fred|tom|george|paul|guy|ryan|brian|aaron|matthew|kevin|aaron|nathan|oliver)/i;
+  const enFallback=voices.filter(function(v){return v.lang&&v.lang.toLowerCase().indexOf("en")===0&&!maleNames.test(v.name)});
   if(enFallback.length)return pickByLang(enFallback);
-  // Truly last resort
-  return voices.find(v=>v.lang&&v.lang.toLowerCase().startsWith("en"))||voices[0];
+  return voices.find(function(v){return v.lang&&v.lang.toLowerCase().indexOf("en")===0})||voices[0];
+}
+
+// Wait for voices to populate (iOS specifically). Returns a Promise.
+function waitForVoices(maxWaitMs){
+  maxWaitMs=maxWaitMs||1500;
+  return new Promise(function(resolve){
+    if(typeof window==="undefined"||!window.speechSynthesis){resolve([]);return}
+    let voices=window.speechSynthesis.getVoices();
+    if(voices&&voices.length){_cachedVoices=voices;resolve(voices);return}
+    let resolved=false;
+    function done(){
+      if(resolved)return;
+      resolved=true;
+      const v=window.speechSynthesis.getVoices();
+      if(v&&v.length)_cachedVoices=v;
+      resolve(v||_cachedVoices||[]);
+    }
+    // Listen for the voices-changed event
+    const onChange=function(){done()};
+    window.speechSynthesis.addEventListener?
+      window.speechSynthesis.addEventListener("voiceschanged",onChange):
+      (window.speechSynthesis.onvoiceschanged=onChange);
+    // Also poll because some browsers do not fire the event
+    const start=Date.now();
+    const poll=setInterval(function(){
+      const v=window.speechSynthesis.getVoices();
+      if((v&&v.length)||Date.now()-start>maxWaitMs){
+        clearInterval(poll);
+        done();
+      }
+    },100);
+  });
 }
 
 function useReadAloud(){
   const [reading,setReading]=useState(false);
-  const speak=useCallback((text)=>{
-    if(!window.speechSynthesis)return;
-    window.speechSynthesis.cancel();
+  const speak=useCallback(function(text){
+    if(typeof window==="undefined"||!window.speechSynthesis)return;
+    // Cancel any in-progress speech first
+    try{window.speechSynthesis.cancel()}catch(e){}
     const plain=text.replace(/\[.*?\]/g,"").replace(/\*\*/g,"").replace(/<[^>]+>/g,"");
-    const u=new SpeechSynthesisUtterance(plain);
-    // Natural, warm pacing for an inviting human-sounding voice
-    u.rate=0.95;
-    u.pitch=1.05;
-    u.volume=1;
-    const voice=pickBestVoice();
-    if(voice){u.voice=voice;if(voice.lang)u.lang=voice.lang}
-    u.onend=()=>setReading(false);
-    u.onerror=()=>setReading(false);
-    setReading(true);
-    // Small delay helps mobile Safari/Chrome reliably play
-    setTimeout(()=>window.speechSynthesis.speak(u),50);
+    if(!plain.trim())return;
+
+    function actuallySpeak(){
+      const u=new SpeechSynthesisUtterance(plain);
+      // Natural, warm pacing for an inviting human-sounding voice
+      u.rate=0.95;
+      u.pitch=1.05;
+      u.volume=1;
+      const voice=pickBestVoice();
+      if(voice){
+        u.voice=voice;
+        if(voice.lang)u.lang=voice.lang;
+      }else{
+        u.lang="en-US";
+      }
+      u.onend=function(){setReading(false)};
+      u.onerror=function(){setReading(false)};
+      setReading(true);
+      try{window.speechSynthesis.speak(u)}catch(e){setReading(false)}
+    }
+
+    // If voices have not loaded yet (common on iOS first-load), wait briefly
+    const voices=window.speechSynthesis.getVoices();
+    if(!voices||!voices.length){
+      waitForVoices(1200).then(actuallySpeak);
+    }else{
+      // Tiny delay helps mobile Safari/Chrome reliably play
+      setTimeout(actuallySpeak,50);
+    }
   },[]);
-  const stop=useCallback(()=>{window.speechSynthesis?.cancel();setReading(false)},[]);
-  return{reading,speak,stop};
+  const stop=useCallback(function(){
+    if(typeof window!=="undefined"&&window.speechSynthesis){
+      try{window.speechSynthesis.cancel()}catch(e){}
+    }
+    setReading(false);
+  },[]);
+  return{reading:reading,speak:speak,stop:stop};
 }
 
-// Preload voices (mobile browsers populate the list asynchronously)
+// Preload voices (browsers populate the list asynchronously, especially iOS)
 if(typeof window!=="undefined"&&window.speechSynthesis){
-  window.speechSynthesis.getVoices();
-  window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices()};
+  refreshVoiceCache();
+  if(window.speechSynthesis.addEventListener){
+    window.speechSynthesis.addEventListener("voiceschanged",refreshVoiceCache);
+  }else{
+    window.speechSynthesis.onvoiceschanged=refreshVoiceCache;
+  }
+  // iOS sometimes needs a poke to start loading
+  setTimeout(refreshVoiceCache,500);
+  setTimeout(refreshVoiceCache,1500);
 }
 
 // ======== Self-Check Component ========
@@ -794,16 +885,40 @@ function QuizView({mod,onBack}){
 
 
 // ======== Touch Swipe Support ========
+// Very strict swipe detection: requires deliberate horizontal motion, low
+// vertical drift, and a tight time window. Accidental taps with tiny finger
+// drift (especially on the Next button) must NOT be misread as swipes.
 function useSwipe(onLeft, onRight) {
   const touchStart = useRef(null);
   const touchEnd = useRef(null);
-  const minSwipe = 50;
-  function onTouchStart(e) { touchEnd.current = null; touchStart.current = e.targetTouches[0].clientX; }
-  function onTouchMove(e) { touchEnd.current = e.targetTouches[0].clientX; }
+  const touchStartY = useRef(null);
+  const touchEndY = useRef(null);
+  const touchStartTime = useRef(0);
+  const MIN_SWIPE = 80;        // horizontal distance must exceed this
+  const MAX_VERTICAL = 60;     // vertical drift must stay under this
+  const MAX_DURATION = 600;    // gesture must complete within this many ms
+  function onTouchStart(e) {
+    touchEnd.current = null;
+    touchEndY.current = null;
+    touchStart.current = e.targetTouches[0].clientX;
+    touchStartY.current = e.targetTouches[0].clientY;
+    touchStartTime.current = Date.now();
+  }
+  function onTouchMove(e) {
+    touchEnd.current = e.targetTouches[0].clientX;
+    touchEndY.current = e.targetTouches[0].clientY;
+  }
   function onTouchEnd() {
-    if (!touchStart.current || !touchEnd.current) return;
-    const dist = touchStart.current - touchEnd.current;
-    if (Math.abs(dist) > minSwipe) { if (dist > 0 && onLeft) onLeft(); if (dist < 0 && onRight) onRight(); }
+    if (touchStart.current == null || touchEnd.current == null) return;
+    const dx = touchStart.current - touchEnd.current;
+    const dy = Math.abs((touchEndY.current || 0) - (touchStartY.current || 0));
+    const duration = Date.now() - touchStartTime.current;
+    if (Math.abs(dx) < MIN_SWIPE) return;     // not enough horizontal motion
+    if (dy > MAX_VERTICAL) return;            // too much vertical drift = not a swipe
+    if (duration > MAX_DURATION) return;      // too slow = probably a drag/tap
+    if (Math.abs(dx) < dy * 1.5) return;      // not horizontal-dominant
+    if (dx > 0 && onLeft) onLeft();
+    if (dx < 0 && onRight) onRight();
   }
   return { onTouchStart, onTouchMove, onTouchEnd };
 }
@@ -847,16 +962,35 @@ function SlideViewer({mod,onBack}){
     }
   },[idx]);
 
+  // Stop speech when this component unmounts (user clicks "All Modules",
+  // navigates back, or otherwise leaves the slide viewer). Without this,
+  // the female voice keeps narrating the previous slide on the new screen.
+  useEffect(function(){
+    return function(){
+      if(typeof window!=="undefined"&&window.speechSynthesis){
+        try{window.speechSynthesis.cancel()}catch(e){}
+      }
+    };
+  },[]);
+
+  // Wrap onBack so it always stops speech first
+  const handleBack=function(){
+    if(typeof window!=="undefined"&&window.speechSynthesis){
+      try{window.speechSynthesis.cancel()}catch(e){}
+    }
+    if(onBack)onBack();
+  };
+
   const swipeHandlers = useSwipe(
     function(){ if(timerDone && idx < total-1){stop();setIdx(idx+1)} },
     function(){ if(idx > 0){stop();setIdx(idx-1)} }
   );
-  if(showQuiz)return React.createElement(QuizView,{mod,onBack});
+  if(showQuiz)return React.createElement(QuizView,{mod,onBack:handleBack});
 
   // Self-check slide
   if(slide.type==="selfcheck"){
     return React.createElement("div",{className:"sv-wrap"},
-      React.createElement("div",{className:"sv-breadcrumb no-print",onClick:onBack},"\u2190 Back to Modules"),
+      React.createElement("div",{className:"sv-breadcrumb no-print",onClick:handleBack},"\u2190 Back to Modules"),
       React.createElement("div",{className:"sv-progress"},React.createElement("div",{className:"sv-prog-fill",style:{width:((idx+1)/total*100)+"%"}})),
       React.createElement("div",{className:"sv-read no-print"},
         React.createElement("span",{className:"sv-counter"},"Item "+(idx+1)+" of "+total)),
@@ -868,7 +1002,7 @@ function SlideViewer({mod,onBack}){
   const plainText=slide.body||slide.sub||"";
 
   return React.createElement("div",{className:"sv-wrap"},
-    React.createElement("div",{className:"sv-breadcrumb no-print",onClick:onBack},"\u2190 Back to Modules"),
+    React.createElement("div",{className:"sv-breadcrumb no-print",onClick:handleBack},"\u2190 Back to Modules"),
     React.createElement("div",{className:"sv-progress"},React.createElement("div",{className:"sv-prog-fill",style:{width:((idx+1)/total*100)+"%"}})),
     !timerDone&&slide.type!=="title"&&React.createElement("div",null,
       React.createElement("div",{className:"sv-timer-label"},"Please read this slide ("+(SLIDE_MIN_SECONDS - Math.floor(timerPct/100*SLIDE_MIN_SECONDS))+"s remaining)"),
@@ -1640,8 +1774,19 @@ function App(){
   const [bannerError,setBannerError]=useState("");
 
   function handleSelect(m){setActiveMod(m);setView("slides")}
-  function handleBack(){setView("grid");setActiveMod(null);setActiveForm(null);setFormType(null)}
-  function handleBackToDocs(){setView("grid");setActiveForm(null);setFormType(null)}
+  function handleBack(){
+    // Stop any in-progress narration before changing views
+    if(typeof window!=="undefined"&&window.speechSynthesis){
+      try{window.speechSynthesis.cancel()}catch(e){}
+    }
+    setView("grid");setActiveMod(null);setActiveForm(null);setFormType(null)
+  }
+  function handleBackToDocs(){
+    if(typeof window!=="undefined"&&window.speechSynthesis){
+      try{window.speechSynthesis.cancel()}catch(e){}
+    }
+    setView("grid");setActiveForm(null);setFormType(null)
+  }
   function handleReset(){if(confirm("Reset all progress? This cannot be undone.")){localStorage.removeItem(STORE_KEY);location.reload()}}
   function handleNameSubmit(){
     var n=tempName.trim();
@@ -1707,7 +1852,7 @@ function App(){
 
   return React.createElement("div",null,
     React.createElement("div",{className:"hdr no-print"},
-      React.createElement("img",{src:WHITE_LOGO,className:"hdr-logo",alt:"BHA Logo"}),
+      React.createElement("img",{src:WHITE_LOGO,className:"hdr-logo hdr-logo-clickable",alt:"BHA Logo - Return to Modules",title:"Return to Modules",onClick:handleBack,role:"button",tabIndex:0,onKeyDown:function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();handleBack()}}}),
       React.createElement("div",null,
         React.createElement("h1",null,"Benevolent House Academy"),
         React.createElement("span",{className:"hdr-sub"},"Staff Training Portal")
