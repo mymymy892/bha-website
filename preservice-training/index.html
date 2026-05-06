@@ -18,6 +18,19 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#FAF8F
 .hdr-name{font-size:13px;color:#E3B332}
 .hdr-btn{background:#C5960C;color:#fff;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s}
 .hdr-btn:hover{background:#a67e09;transform:translateY(-1px)}
+/* Returning-user email banner */
+.email-banner{background:#FFF8E1;border-bottom:2px solid #C5960C;padding:12px 20px}
+.email-banner-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.email-banner-msg{flex:1;min-width:240px;font-size:13px;color:#4A3A00;line-height:1.5}
+.email-banner-msg strong{color:#052F59}
+.email-banner-form{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.email-banner-input{padding:8px 12px;border:2px solid #C5960C;border-radius:6px;font-size:14px;min-width:220px;outline:none}
+.email-banner-input:focus{border-color:#052F59}
+.email-banner-btn{background:#C5960C;color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer}
+.email-banner-btn:hover:not(:disabled){background:#a67e09}
+.email-banner-btn:disabled{opacity:.5;cursor:not-allowed}
+.email-banner-skip{background:transparent;color:#5a6f82;border:none;padding:8px 12px;font-size:12px;cursor:pointer;text-decoration:underline}
+.email-banner-err{color:#C62828;font-size:12px;margin-top:6px;width:100%}
 /* Module Grid */
 .grid-wrap{max-width:1100px;margin:0 auto;padding:32px 20px}
 .grid-title{font-size:28px;font-weight:700;color:#052F59;margin-bottom:4px}
@@ -56,6 +69,10 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#FAF8F
 .callout-warn::before{content:"\26a0\fe0f "}.callout-danger::before{content:"\1f6ab "}.callout-tip::before{content:"\1f4a1 "}.callout-info::before{content:"\2139\fe0f "}
 .scenario-box{background:#F3E5F5;border:1px solid #9C27B0;border-radius:8px;padding:16px;margin:12px 0;font-size:14px;line-height:1.65;color:#3A1546}
 .scenario-box::before{content:"\1f4cb Scenario";display:block;font-weight:700;margin-bottom:6px;color:#6A1B9A}
+.scenario-box p{margin-bottom:8px}.scenario-box p:last-child{margin-bottom:0}
+.scenario-box ol,.scenario-box ul{margin:6px 0 8px 22px}.scenario-box li{margin-bottom:4px}
+.callout p{margin-bottom:6px}.callout p:last-child{margin-bottom:0}
+.callout ol,.callout ul{margin:4px 0 6px 22px}.callout li{margin-bottom:3px}
 .keypoint-box{background:#FFF8E1;border:2px solid #C5960C;border-radius:8px;padding:14px 16px;margin:12px 0;font-size:15px;font-weight:600;color:#052F59;text-align:center}
 .keypoint-box::before{content:"\1f511 Key Point";display:block;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#C5960C;margin-bottom:4px;font-weight:700}
 /* Self-check question */
@@ -253,10 +270,11 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#FAF8F
   .reveal-btn{min-height:44px;font-size:14px}
   .accordion-hdr{min-height:48px;font-size:15px}
   .flip-card-front{font-size:16px;min-height:100px}
-  .name-overlay{align-items:center;padding:12px}
-  .name-box{margin:0 auto;border-radius:12px}
+  .name-overlay{align-items:flex-start;padding:12px;-webkit-overflow-scrolling:touch}
+  .name-box{margin:0 auto;border-radius:12px;padding:20px 16px}
+  .name-box h2{font-size:18px}
   .name-input{font-size:18px;padding:14px;min-height:48px}
-  .name-submit{font-size:18px;padding:14px 32px;min-height:52px}
+  .name-submit{font-size:18px;padding:14px 32px;min-height:52px;width:100%}
   .form-input{font-size:16px;padding:12px;min-height:48px}
   .sig-canvas{height:140px}
   .sig-btn{min-height:44px;font-size:13px;padding:8px 16px}
@@ -266,6 +284,9 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#FAF8F
   .form-card h3{font-size:15px}
   .cert{border-width:2px;padding:20px 12px}
   .cert h2{font-size:20px}
+  .email-banner{padding:12px 14px}
+  .email-banner-input{min-width:0;width:100%;flex:1}
+  .email-banner-form{width:100%}
 }
 </style>
 </head>
@@ -324,60 +345,168 @@ function getProgress(){const s=loadStore();return s.progress||{}}
 function setProgress(modId,data){const s=loadStore();s.progress=s.progress||{};s.progress[modId]={...s.progress[modId],...data};saveStore(s)}
 function getName(){return loadStore().name||""}
 function setNameStore(n){const s=loadStore();s.name=n;saveStore(s)}
+function getEmail(){return loadStore().email||""}
+function setEmailStore(e){const s=loadStore();s.email=e;saveStore(s)}
+
+// ======== Jotform configuration (auto-logging completions) ========
+// Form ID 261255295349060 collects completion records. The submission endpoint
+// accepts standard form-encoded POSTs and does not require an API key.
+const JOTFORM_FORM_ID = "261255295349060";
+const JOTFORM_SUBMIT_URL = "https://submit.jotform.com/submit/" + JOTFORM_FORM_ID;
+function logCompletionToJotform(payload){
+  // Fire-and-forget. Never block the UI on this.
+  try {
+    var fd = new FormData();
+    fd.append("formID", JOTFORM_FORM_ID);
+    // Field names match the unique names assigned in the Jotform form.
+    if(payload.name)         fd.append("q2_textbox0", payload.name);
+    if(payload.email)        fd.append("emailAddress", payload.email);
+    if(payload.moduleNumber) fd.append("q3_dropdown1", String(payload.moduleNumber));
+    if(payload.moduleTitle)  fd.append("q4_textbox2", payload.moduleTitle);
+    if(payload.score!=null)  fd.append("q5_number3", String(payload.score));
+    if(payload.passFail)     fd.append("q6_dropdown4", payload.passFail);
+    if(payload.date)         fd.append("q7_datetime5", payload.date);
+    if(payload.time)         fd.append("q8_time6", payload.time);
+    if(payload.hours!=null)  fd.append("q9_number7", String(payload.hours));
+    if(payload.code)         fd.append("q10_textbox8", payload.code);
+    if(payload.topics)       fd.append("q11_textarea9", payload.topics);
+    fetch(JOTFORM_SUBMIT_URL, {
+      method: "POST",
+      body: fd,
+      mode: "no-cors"
+    }).catch(function(){/* ignore network errors */});
+  } catch(e) { /* ignore */ }
+}
 
 // ======== Text Parser ========
+// Helper: split a multi-paragraph text block into structured sub-parts
+// (paragraphs, ordered lists, unordered lists). Used for scenario contents.
+function parseInner(text){
+  if(!text)return [];
+  const out=[];
+  const lines=text.split("\n");
+  let buf=[];
+  function flush(){if(buf.length){out.push({type:"p",text:buf.join(" ").trim()});buf=[]}}
+  for(const ln of lines){
+    if(ln.match(/^\d+\./)){flush();out.push({type:"oli",text:ln});continue}
+    if(ln.startsWith("- ")){flush();out.push({type:"uli",text:ln.slice(2)});continue}
+    if(ln.trim()===""){flush();continue}
+    buf.push(ln);
+  }
+  flush();
+  // Group consecutive list items
+  const grouped=[];
+  for(const p of out){
+    if(p.type==="oli"||p.type==="uli"){
+      const last=grouped[grouped.length-1];
+      const listType=p.type+"_list";
+      if(last&&last.type===listType){last.items.push(p.text.replace(/^\d+\.\s*/,"").replace(/^- /,""))}
+      else{grouped.push({type:listType,items:[p.text.replace(/^\d+\.\s*/,"").replace(/^- /,"")]})}
+    }else{grouped.push(p)}
+  }
+  return grouped;
+}
+
 function parseBody(text){
   if(!text)return null;
-  // Pre-process: join multi-line [scenario], [callout-*], [keypoint] blocks onto single lines
-  text=text.replace(/\[scenario\]([\s\S]*?)\[\/scenario\]/g,function(m,c){return "[scenario]"+c.replace(/\n/g," ")+"[/scenario]"});
-  text=text.replace(/\[callout-(\w+)\]([\s\S]*?)\[\/callout-\w+\]/g,function(m,t,c){return "[callout-"+t+"]"+c.replace(/\n/g," ")+"[/callout-"+t+"]"});
-  text=text.replace(/\[keypoint\]([\s\S]*?)\[\/keypoint\]/g,function(m,c){return "[keypoint]"+c.replace(/\n/g," ")+"[/keypoint]"});
+  // Use placeholder substitution for multi-line blocks so we can keep them intact
+  // through line-by-line parsing without losing internal structure.
+  const blocks=[];
+  function stash(kind,payload){
+    const id=blocks.length;
+    blocks.push({kind:kind,payload:payload});
+    return "\n@@BLOCK"+id+"@@\n";
+  }
+  // Scenarios: preserve full content for structured rendering
+  text=text.replace(/\[scenario\]([\s\S]*?)\[\/scenario\]/g,function(m,c){
+    return stash("scenario",c.trim());
+  });
+  // Callouts: preserve full content (may contain line breaks, lists)
+  text=text.replace(/\[callout-(warn|danger|tip|info)\]([\s\S]*?)\[\/callout-\w+\]/g,function(m,t,c){
+    return stash("callout:"+t,c.trim());
+  });
+  // Keypoints
+  text=text.replace(/\[keypoint\]([\s\S]*?)\[\/keypoint\]/g,function(m,c){
+    return stash("keypoint",c.trim());
+  });
+  // Accordions, flips, reveals: single-line constructs
+  text=text.replace(/\[accordion=([^\]]+)\]([\s\S]*?)\[\/accordion\]/g,function(m,t,c){
+    return stash("accordion",{title:t.trim(),text:c.trim()});
+  });
+  text=text.replace(/\[flip=([^\]]+)\]([\s\S]*?)\[\/flip\]/g,function(m,f,b){
+    return stash("flip",{front:f.trim(),back:b.trim()});
+  });
+  text=text.replace(/\[reveal=([^\]]+)\]([\s\S]*?)\[\/reveal\]/g,function(m,l,c){
+    return stash("reveal",{label:l.trim(),text:c.trim()});
+  });
+
+  // Now line-by-line parse remaining text
   const parts=[];
   const lines=text.split("\n");
   let buf=[];
-  function flush(){if(buf.length){parts.push({type:"p",text:buf.join(" ")});buf=[]}}
+  function flush(){if(buf.length){parts.push({type:"p",text:buf.join(" ").trim()});buf=[]}}
   for(const line of lines){
-    const cbm=line.match(/^\[callout-(warn|danger|tip|info)\](.*?)\[\/callout-\w+\]$/s);
-    if(cbm){flush();parts.push({type:"callout",variant:cbm[1],text:cbm[2].trim()});continue}
-    const scm=line.match(/^\[scenario\](.*?)\[\/scenario\]$/s);
-    if(scm){flush();parts.push({type:"scenario",text:scm[1].trim()});continue}
-    const kpm=line.match(/^\[keypoint\](.*?)\[\/keypoint\]$/s);
-    if(kpm){flush();parts.push({type:"keypoint",text:kpm[1].trim()});continue}
-    const accm=line.match(/^\[accordion=(.*?)\](.*?)\[\/accordion\]$/s);
-    if(accm){flush();parts.push({type:"accordion",title:accm[1].trim(),text:accm[2].trim()});continue}
-    const flm=line.match(/^\[flip=(.*?)\](.*?)\[\/flip\]$/s);
-    if(flm){flush();parts.push({type:"flip",front:flm[1].trim(),back:flm[2].trim()});continue}
-    const rvm=line.match(/^\[reveal=(.*?)\](.*?)\[\/reveal\]$/s);
-    if(rvm){flush();parts.push({type:"reveal",label:rvm[1].trim(),text:rvm[2].trim()});continue}
+    const blockMatch=line.match(/^@@BLOCK(\d+)@@$/);
+    if(blockMatch){
+      flush();
+      const b=blocks[parseInt(blockMatch[1],10)];
+      if(b.kind==="scenario"){
+        parts.push({type:"scenario",inner:parseInner(b.payload)});
+      }else if(b.kind.indexOf("callout:")===0){
+        parts.push({type:"callout",variant:b.kind.split(":")[1],inner:parseInner(b.payload)});
+      }else if(b.kind==="keypoint"){
+        parts.push({type:"keypoint",text:b.payload});
+      }else if(b.kind==="accordion"){
+        parts.push({type:"accordion",title:b.payload.title,inner:parseInner(b.payload.text)});
+      }else if(b.kind==="flip"){
+        parts.push({type:"flip",front:b.payload.front,back:b.payload.back});
+      }else if(b.kind==="reveal"){
+        parts.push({type:"reveal",label:b.payload.label,inner:parseInner(b.payload.text)});
+      }
+      continue;
+    }
     if(line.match(/^\d+\./)){flush();parts.push({type:"oli",text:line});continue}
     if(line.startsWith("- ")){flush();parts.push({type:"uli",text:line.slice(2)});continue}
     if(line.trim()===""){flush();continue}
     buf.push(line);
   }
   flush();
+  // Group consecutive list items at top level
   const grouped=[];
   for(const p of parts){
     if(p.type==="oli"||p.type==="uli"){
       const last=grouped[grouped.length-1];
-      if(last&&last.type===p.type+"_list"){last.items.push(p.text.replace(/^\d+\.\s*/,""))}
-      else{grouped.push({type:p.type+"_list",items:[p.text.replace(/^\d+\.\s*/,"").replace(/^- /,"")]})}
+      const listType=p.type+"_list";
+      if(last&&last.type===listType){last.items.push(p.text.replace(/^\d+\.\s*/,"").replace(/^- /,""))}
+      else{grouped.push({type:listType,items:[p.text.replace(/^\d+\.\s*/,"").replace(/^- /,"")]})}
     }else{grouped.push(p)}
   }
   return grouped;
 }
 
+// Render structured inner content (used inside scenarios, callouts, accordions, reveals)
+function renderInner(inner){
+  if(!inner||!inner.length)return null;
+  return inner.map(function(p,i){
+    if(p.type==="p")return React.createElement("p",{key:i,style:{marginBottom:8},dangerouslySetInnerHTML:{__html:bold(p.text)}});
+    if(p.type==="oli_list")return React.createElement("ol",{key:i,style:{margin:"6px 0 8px 22px"}},p.items.map(function(it,j){return React.createElement("li",{key:j,style:{marginBottom:4},dangerouslySetInnerHTML:{__html:bold(it)}})}));
+    if(p.type==="uli_list")return React.createElement("ul",{key:i,style:{margin:"6px 0 8px 22px"}},p.items.map(function(it,j){return React.createElement("li",{key:j,style:{marginBottom:4},dangerouslySetInnerHTML:{__html:bold(it)}})}));
+    return null;
+  });
+}
+
 function RenderBody({parts}){
   if(!parts)return null;
-  return parts.map((p,i)=>{
+  return parts.map(function(p,i){
     if(p.type==="p")return React.createElement("p",{key:i,dangerouslySetInnerHTML:{__html:bold(p.text)}});
-    if(p.type==="callout")return React.createElement("div",{key:i,className:"callout callout-"+p.variant,dangerouslySetInnerHTML:{__html:bold(p.text)}});
-    if(p.type==="scenario")return React.createElement("div",{key:i,className:"scenario-box",dangerouslySetInnerHTML:{__html:bold(p.text)}});
+    if(p.type==="callout")return React.createElement("div",{key:i,className:"callout callout-"+p.variant},renderInner(p.inner));
+    if(p.type==="scenario")return React.createElement("div",{key:i,className:"scenario-box"},renderInner(p.inner));
     if(p.type==="keypoint")return React.createElement("div",{key:i,className:"keypoint-box",dangerouslySetInnerHTML:{__html:bold(p.text)}});
-    if(p.type==="accordion")return React.createElement(Accordion,{key:i,title:p.title},React.createElement("div",{dangerouslySetInnerHTML:{__html:bold(p.text)}}));
+    if(p.type==="accordion")return React.createElement(Accordion,{key:i,title:p.title},renderInner(p.inner));
     if(p.type==="flip")return React.createElement(FlipCard,{key:i,front:p.front,back:p.back});
-    if(p.type==="reveal")return React.createElement(RevealBox,{key:i,label:p.label},React.createElement("div",{dangerouslySetInnerHTML:{__html:bold(p.text)}}));
-    if(p.type==="oli_list")return React.createElement("ol",{key:i},p.items.map((it,j)=>React.createElement("li",{key:j,dangerouslySetInnerHTML:{__html:bold(it)}})));
-    if(p.type==="uli_list")return React.createElement("ul",{key:i},p.items.map((it,j)=>React.createElement("li",{key:j,dangerouslySetInnerHTML:{__html:bold(it)}})));
+    if(p.type==="reveal")return React.createElement(RevealBox,{key:i,label:p.label},renderInner(p.inner));
+    if(p.type==="oli_list")return React.createElement("ol",{key:i},p.items.map(function(it,j){return React.createElement("li",{key:j,dangerouslySetInnerHTML:{__html:bold(it)}})}));
+    if(p.type==="uli_list")return React.createElement("ul",{key:i},p.items.map(function(it,j){return React.createElement("li",{key:j,dangerouslySetInnerHTML:{__html:bold(it)}})}));
     return null;
   });
 }
@@ -416,7 +545,43 @@ function RevealBox({label,children}){
 
 
 
-// ======== Read Aloud (Female voice preference) ========
+// ======== Read Aloud (Natural female voice with quality preference) ========
+function pickBestVoice(){
+  if(!window.speechSynthesis)return null;
+  const voices=window.speechSynthesis.getVoices();
+  if(!voices||!voices.length)return null;
+  // Prefer high-quality natural neural voices first (in this priority order)
+  const tieredPrefs=[
+    // Tier 1: Premium neural/natural voices (Google, Microsoft Online, Apple Premium)
+    [/google\s*us\s*english/i,/google\s*uk\s*english\s*female/i,/microsoft\s*aria/i,/microsoft\s*jenny/i,/microsoft\s*sonia/i,/natural/i,/neural/i,/premium/i,/enhanced/i],
+    // Tier 2: Apple/iOS quality female voices
+    [/samantha/i,/karen/i,/moira/i,/tessa/i,/serena/i,/allison/i,/ava/i,/susan/i,/victoria/i,/fiona/i],
+    // Tier 3: Microsoft/Windows female voices
+    [/zira/i,/hazel/i,/eva/i,/heera/i,/catherine/i],
+    // Tier 4: Other named female voices
+    [/jenny/i,/aria/i,/sara/i,/joanna/i,/salli/i,/kimberly/i,/kendra/i,/ivy/i,/female/i]
+  ];
+  // Helper: prefer en-US, then any English
+  function pickByLang(matches){
+    return matches.find(v=>v.lang&&v.lang.toLowerCase().startsWith("en-us"))
+      ||matches.find(v=>v.lang&&v.lang.toLowerCase().startsWith("en"))
+      ||matches[0];
+  }
+  for(const tier of tieredPrefs){
+    const matches=voices.filter(v=>tier.some(re=>re.test(v.name)));
+    if(matches.length){
+      const picked=pickByLang(matches);
+      if(picked)return picked;
+    }
+  }
+  // Last resort: any English voice that does NOT match obviously male names
+  const maleNames=/male|david|james|mark|daniel|alex|fred|tom|george|paul|guy|ryan|brian|aaron|matthew|kevin/i;
+  const enFallback=voices.filter(v=>v.lang&&v.lang.toLowerCase().startsWith("en")&&!maleNames.test(v.name));
+  if(enFallback.length)return pickByLang(enFallback);
+  // Truly last resort
+  return voices.find(v=>v.lang&&v.lang.toLowerCase().startsWith("en"))||voices[0];
+}
+
 function useReadAloud(){
   const [reading,setReading]=useState(false);
   const speak=useCallback((text)=>{
@@ -424,28 +589,27 @@ function useReadAloud(){
     window.speechSynthesis.cancel();
     const plain=text.replace(/\[.*?\]/g,"").replace(/\*\*/g,"").replace(/<[^>]+>/g,"");
     const u=new SpeechSynthesisUtterance(plain);
-    u.rate=.95;u.pitch=1;
-    // Stronger female voice selection
-    const voices=window.speechSynthesis.getVoices();
-    const femaleNames=["samantha","karen","victoria","fiona","moira","tessa","allison","ava","susan","zira","hazel","jenny","aria","sara","female"];
-    let voice=null;
-    for(const fn of femaleNames){
-      voice=voices.find(v=>v.lang.startsWith("en")&&v.name.toLowerCase().includes(fn));
-      if(voice)break;
-    }
-    if(!voice)voice=voices.find(v=>v.lang.startsWith("en-US")&&!v.name.toLowerCase().includes("male")&&!v.name.toLowerCase().includes("david")&&!v.name.toLowerCase().includes("james")&&!v.name.toLowerCase().includes("mark")&&!v.name.toLowerCase().includes("daniel"));
-    if(!voice)voice=voices.find(v=>v.lang.startsWith("en"));
-    if(voice)u.voice=voice;
+    // Natural, warm pacing for an inviting human-sounding voice
+    u.rate=0.95;
+    u.pitch=1.05;
+    u.volume=1;
+    const voice=pickBestVoice();
+    if(voice){u.voice=voice;if(voice.lang)u.lang=voice.lang}
     u.onend=()=>setReading(false);
+    u.onerror=()=>setReading(false);
     setReading(true);
-    window.speechSynthesis.speak(u);
+    // Small delay helps mobile Safari/Chrome reliably play
+    setTimeout(()=>window.speechSynthesis.speak(u),50);
   },[]);
   const stop=useCallback(()=>{window.speechSynthesis?.cancel();setReading(false)},[]);
   return{reading,speak,stop};
 }
 
-// Preload voices
-if(window.speechSynthesis){window.speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices()}
+// Preload voices (mobile browsers populate the list asynchronously)
+if(typeof window!=="undefined"&&window.speechSynthesis){
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices()};
+}
 
 // ======== Self-Check Component ========
 function SelfCheck({slide,onContinue}){
@@ -545,6 +709,7 @@ function QuizView({mod,onBack}){
   const [submitted,setSubmitted]=useState(false);
   const [score,setScore]=useState(0);
   const name=getName();
+  const email=getEmail();
 
   function handleSubmit(){
     let correct=0;
@@ -552,7 +717,26 @@ function QuizView({mod,onBack}){
     const pct=Math.round(correct/mod.quiz.length*100);
     setScore(pct);setSubmitted(true);
     const passed=pct>=70;
-    setProgress(mod.id,{quizScore:pct,passed,quizDate:new Date().toLocaleDateString(),answers:{...answers}});
+    const now=new Date();
+    setProgress(mod.id,{quizScore:pct,passed,quizDate:now.toLocaleDateString(),answers:{...answers}});
+    // Auto-log every completion (pass or fail) so administrators have a full record.
+    var initials=name.split(/\s+/).filter(Boolean).map(function(n){return n[0]}).join("").toUpperCase();
+    var dateStr=now.toLocaleDateString();
+    var code="BHA-M"+mod.id+"-"+dateStr.replace(/\//g,"")+"-"+initials;
+    var topics=(mod.tacRefs||[]).join(", ");
+    logCompletionToJotform({
+      name: name,
+      email: email,
+      moduleNumber: mod.id,
+      moduleTitle: mod.title,
+      score: pct,
+      passFail: passed?"PASS":"FAIL",
+      date: dateStr,
+      time: now.toLocaleTimeString(),
+      hours: mod.hours,
+      code: code,
+      topics: topics
+    });
   }
   function handleRetake(){setAnswers({});setSubmitted(false);setScore(0)}
   function handlePrint(){window.print()}
@@ -1444,14 +1628,40 @@ function App(){
   const [activeMod,setActiveMod]=useState(null);
   const [activeForm,setActiveForm]=useState(null);
   const [formType,setFormType]=useState(null);
+  // Treat the user as "set" if they have a name stored. Email is collected
+  // separately for returning users via a small banner so existing staff who
+  // started before email was required do not lose their progress view.
   const [nameSet,setNameSet]=useState(!!getName());
   const [tempName,setTempName]=useState("");
+  const [tempEmail,setTempEmail]=useState("");
+  const [emailError,setEmailError]=useState("");
+  const [showEmailBanner,setShowEmailBanner]=useState(!!getName()&&!getEmail());
+  const [bannerEmail,setBannerEmail]=useState("");
+  const [bannerError,setBannerError]=useState("");
 
   function handleSelect(m){setActiveMod(m);setView("slides")}
   function handleBack(){setView("grid");setActiveMod(null);setActiveForm(null);setFormType(null)}
   function handleBackToDocs(){setView("grid");setActiveForm(null);setFormType(null)}
   function handleReset(){if(confirm("Reset all progress? This cannot be undone.")){localStorage.removeItem(STORE_KEY);location.reload()}}
-  function handleNameSubmit(){if(tempName.trim()){setNameStore(tempName.trim());setNameSet(true)}}
+  function handleNameSubmit(){
+    var n=tempName.trim();
+    var e=tempEmail.trim();
+    if(!n)return;
+    var emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRe.test(e)){setEmailError("Please enter a valid email address.");return}
+    setEmailError("");
+    setNameStore(n);
+    setEmailStore(e);
+    setNameSet(true);
+  }
+  function handleBannerEmailSubmit(){
+    var e=bannerEmail.trim();
+    var emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRe.test(e)){setBannerError("Please enter a valid email address.");return}
+    setBannerError("");
+    setEmailStore(e);
+    setShowEmailBanner(false);
+  }
   function handleSelectForm(formId, type){setActiveForm(formId);setFormType(type);setView("form")}
 
   if(!nameSet){
@@ -1474,9 +1684,12 @@ function App(){
           React.createElement("div",null,
             React.createElement("strong",null,"8 Modules | 10 Hours | "+MODULES.reduce(function(a,m){return a+m.quiz.length},0)+" Quiz Questions"))
         ),
-        React.createElement("p",{style:{fontSize:13,color:"#333",marginBottom:12}},"Enter your full name below. This name will appear on all certificates."),
-        React.createElement("input",{className:"name-input",placeholder:"Your Full Name",value:tempName,onChange:function(e){return setTempName(e.target.value)},onKeyDown:function(e){return e.key==="Enter"&&handleNameSubmit()}}),
-        React.createElement("button",{className:"name-submit",onClick:handleNameSubmit,disabled:!tempName.trim()},"Begin Training")
+        React.createElement("p",{style:{fontSize:13,color:"#333",marginBottom:8,fontWeight:600}},"Enter your full name and email below."),
+        React.createElement("p",{style:{fontSize:12,color:"#5a6f82",marginBottom:12,fontStyle:"italic"}},"Your name will appear on all certificates. Your email is used to confirm your training completions for your employee file."),
+        React.createElement("input",{className:"name-input",placeholder:"Your Full Name",value:tempName,onChange:function(e){return setTempName(e.target.value)},onKeyDown:function(e){return e.key==="Enter"&&handleNameSubmit()},style:{marginBottom:10}}),
+        React.createElement("input",{className:"name-input",type:"email",placeholder:"Your Email Address",value:tempEmail,onChange:function(e){setTempEmail(e.target.value);if(emailError)setEmailError("")},onKeyDown:function(e){return e.key==="Enter"&&handleNameSubmit()}}),
+        emailError&&React.createElement("p",{style:{color:"#C62828",fontSize:12,marginTop:6,marginBottom:0,textAlign:"left"}},emailError),
+        React.createElement("button",{className:"name-submit",onClick:handleNameSubmit,disabled:!tempName.trim()||!tempEmail.trim(),style:{marginTop:14}},"Begin Training")
       )
     );
   }
@@ -1503,6 +1716,20 @@ function App(){
         React.createElement("span",{className:"hdr-name"},getName()),
         view!=="grid"&&React.createElement("button",{className:"hdr-btn",onClick:handleBack},"All Modules"),
         React.createElement("button",{className:"hdr-btn",onClick:handleReset,style:{background:"#5a6f82"}},"Reset")
+      )
+    ),
+    showEmailBanner&&React.createElement("div",{className:"email-banner no-print"},
+      React.createElement("div",{className:"email-banner-inner"},
+        React.createElement("div",{className:"email-banner-msg"},
+          React.createElement("strong",null,"Welcome back, "+getName().split(" ")[0]+"!"),
+          React.createElement("span",null," Please add your email so we can confirm your training completions for your employee file. Your progress is saved.")
+        ),
+        React.createElement("div",{className:"email-banner-form"},
+          React.createElement("input",{className:"email-banner-input",type:"email",placeholder:"your@email.com",value:bannerEmail,onChange:function(e){setBannerEmail(e.target.value);if(bannerError)setBannerError("")},onKeyDown:function(e){return e.key==="Enter"&&handleBannerEmailSubmit()}}),
+          React.createElement("button",{className:"email-banner-btn",onClick:handleBannerEmailSubmit,disabled:!bannerEmail.trim()},"Save"),
+          React.createElement("button",{className:"email-banner-skip",onClick:function(){setShowEmailBanner(false)}},"Later")
+        ),
+        bannerError&&React.createElement("p",{className:"email-banner-err"},bannerError)
       )
     ),
     view==="grid"&&React.createElement(ModuleGrid,{onSelect:handleSelect}),
