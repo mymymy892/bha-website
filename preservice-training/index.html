@@ -1963,7 +1963,24 @@ function AgreementFormView({form, onBack}) {
 
 // ======== Fillable Form Viewer ========
 function FillableFormView({form, onBack}) {
-  const [values, setValues] = useState({});
+  // Build initial values object from any defaultVal entries in the form
+  // definition so pre-populated fields (like Operation Information on the
+  // Background Check form) are included in the submitted data, not just
+  // displayed visually on screen.
+  function buildInitialValues(formDef){
+    var init = {};
+    (formDef.fields || []).forEach(function(section){
+      (section.rows || []).forEach(function(row){
+        row.forEach(function(field){
+          if (field.name && field.defaultVal !== undefined) {
+            init[field.name] = field.defaultVal;
+          }
+        });
+      });
+    });
+    return init;
+  }
+  const [values, setValues] = useState(function(){ return buildInitialValues(form); });
   const [sigData, setSigData] = useState(null);
   const [signed, setSigned] = useState(false);
   const [submitted, setSubmitted] = useState(false);
