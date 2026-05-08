@@ -302,31 +302,52 @@ const JOTFORM_COMPLETIONS_FORM_ID = "261255295349060";
 const JOTFORM_AGREEMENTS_FORM_ID = "261268412415049";
 
 const COMPLETION_FIELD_MAP = {
-  textbox0: "name",
-  emailAddress: "email",
-  dropdown1: "moduleNumber",
-  textbox2: "moduleTitle",
-  number3: "score",
-  dropdown4: "passFail",
-  datetime5: "date",
-  time6: "time",
-  number7: "hours",
-  textbox8: "code",
-  textarea9: "topics"
+  // Includes both prefixed and unprefixed forms for robustness
+  textbox0: "name", q2_textbox0: "name",
+  emailAddress: "email", email: "email",
+  dropdown1: "moduleNumber", q3_dropdown1: "moduleNumber",
+  textbox2: "moduleTitle", q4_textbox2: "moduleTitle",
+  number3: "score", q5_number3: "score",
+  dropdown4: "passFail", q6_dropdown4: "passFail",
+  datetime5: "date", q7_datetime5: "date",
+  time6: "time", q8_time6: "time",
+  number7: "hours", q9_number7: "hours",
+  textbox8: "code", q10_textbox8: "code",
+  textarea9: "topics", q11_textarea9: "topics"
 };
 
 const AGREEMENT_FIELD_MAP = {
   // Maps Jotform API answer 'name' to our internal field names.
-  // The Jotform API returns answer names with the qN_ prefix stripped.
-  // So unique name "q2_textbox0" arrives in the API as "textbox0".
-  textbox0: "name",       // q2_textbox0 = Employee Name
-  email1: "email",        // q3_email1 = Email Address
-  dropdown2: "formType",  // q4_dropdown2 = Form Type
-  textbox3: "formTitle",  // q5_textbox3 = Form Title
-  textbox4: "date",       // q6_textbox4 = Submission Date
-  textbox5: "time",       // q7_textbox5 = Submission Time
-  textarea6: "signature", // q8_textarea6 = Signature Image
-  textarea7: "formData"   // q9_textarea7 = Form Data
+  // Jotform's API can return field names in several different forms depending
+  // on the field type and form configuration:
+  //   - With qN_ prefix:    "q3_email1"
+  //   - Without prefix:     "email1"
+  //   - Type only:          "email"
+  // We list every variant we may encounter so the lookup is robust.
+
+  // Employee Name (q2_textbox0)
+  textbox0: "name", q2_textbox0: "name",
+
+  // Email Address (q3_email1) - email fields are particularly inconsistent
+  email1: "email", q3_email1: "email", emailAddress: "email", email: "email",
+
+  // Form Type (q4_dropdown2)
+  dropdown2: "formType", q4_dropdown2: "formType",
+
+  // Form Title (q5_textbox3)
+  textbox3: "formTitle", q5_textbox3: "formTitle",
+
+  // Submission Date (q6_textbox4)
+  textbox4: "date", q6_textbox4: "date",
+
+  // Submission Time (q7_textbox5)
+  textbox5: "time", q7_textbox5: "time",
+
+  // Signature Image (q8_textarea6)
+  textarea6: "signature", q8_textarea6: "signature",
+
+  // Form Data (q9_textarea7)
+  textarea7: "formData", q9_textarea7: "formData"
 };
 
 const MODULE_TOPICS = {
@@ -393,14 +414,31 @@ async function loadJotformRecords(formId, fieldMap){
   return (data.content || []).map(function(sub){
     const r = { _id: sub.id, _created: sub.created_at };
     const answers = sub.answers || {};
+    // Capture every answer keyed by every name pattern Jotform might use
+    // (text field "name", "answer.text", or numeric question id) so the
+    // field map has the best chance of finding a match.
     Object.keys(answers).forEach(function(q){
       const ans = answers[q];
-      const name = ans.name;
+      const nameAttr = ans.name;
       const value = normalizeAnswer(ans.answer, ans.prettyFormat);
-      if (fieldMap[name] && value) r[fieldMap[name]] = value;
+      if (!value) return;
+      // Try the literal name first (most common)
+      if (nameAttr && fieldMap[nameAttr] && !r[fieldMap[nameAttr]]) {
+        r[fieldMap[nameAttr]] = value;
+      }
+      // Some forms include type as a field too
+      if (ans.type && fieldMap[ans.type] && !r[fieldMap[ans.type]]) {
+        r[fieldMap[ans.type]] = value;
+      }
     });
+    // If we did not find a name, fall back to using the submission date as a label
+    // so the record still appears in the table and admin can see it.
+    if (!r.name) {
+      r.name = "(name missing — submission " + sub.id + ")";
+      r._missingFields = true;
+    }
     return r;
-  }).filter(function(r){return r.name});
+  });
 }
 
 // =================== COMPLETIONS TAB ===================
