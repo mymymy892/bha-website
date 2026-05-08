@@ -316,14 +316,17 @@ const COMPLETION_FIELD_MAP = {
 };
 
 const AGREEMENT_FIELD_MAP = {
-  employeeName: "name",
-  emailAddress: "email",
-  formType: "formType",
-  formTitle: "formTitle",
-  submissionDate: "date",
-  submissionTime: "time",
-  signatureImage: "signature",
-  formData: "formData"
+  // Maps Jotform API answer 'name' to our internal field names.
+  // The Jotform API returns answer names with the qN_ prefix stripped.
+  // So unique name "q2_textbox0" arrives in the API as "textbox0".
+  textbox0: "name",       // q2_textbox0 = Employee Name
+  email1: "email",        // q3_email1 = Email Address
+  dropdown2: "formType",  // q4_dropdown2 = Form Type
+  textbox3: "formTitle",  // q5_textbox3 = Form Title
+  textbox4: "date",       // q6_textbox4 = Submission Date
+  textbox5: "time",       // q7_textbox5 = Submission Time
+  textarea6: "signature", // q8_textarea6 = Signature Image
+  textarea7: "formData"   // q9_textarea7 = Form Data
 };
 
 const MODULE_TOPICS = {
