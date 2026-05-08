@@ -1402,9 +1402,9 @@ const AGREEMENT_FORMS = [
       {heading: "SAFE SLEEP POLICY ACKNOWLEDGMENT", subheading: "Read the Entire Policy Below, Then Sign at the Bottom | TAC 746.2427"},
       {subheading: "PURPOSE", intro: "Sudden Unexpected Infant Death (SUID), including Sudden Infant Death Syndrome (SIDS), is one of the leading causes of death for infants under one year of age. Following safe sleep practices reduces the risk dramatically. Texas Administrative Code 746.2427 requires every staff member who works with children under 12 months to be trained on and to follow safe sleep practices. This policy describes the practices every BHA employee will follow, every nap, every time, without exception."},
       {subheading: "THE ABC'S OF SAFE SLEEP", intro: "Every infant under 12 months of age sleeps:", items: [
-        "ALONE — One infant per crib. No other infants, children, adults, pillows, blankets, stuffed animals, bumpers, positioners, wedges, or any other items in the crib with the baby.",
-        "On their BACK — Always place infants on their back to sleep, for naps and night sleep. If an infant rolls to their stomach on their own after being placed on their back, they may remain in the position they choose, but they must be initially placed on their back every time.",
-        "In a CRIB — A safety-approved crib with a firm, tight-fitting mattress and a fitted sheet only. No bassinets, swings, car seats, bouncers, couches, adult beds, or floor mats are acceptable for sleep."
+        "ALONE - One infant per crib. No other infants, children, adults, pillows, blankets, stuffed animals, bumpers, positioners, wedges, or any other items in the crib with the baby.",
+        "On their BACK - Always place infants on their back to sleep, for naps and night sleep. If an infant rolls to their stomach on their own after being placed on their back, they may remain in the position they choose, but they must be initially placed on their back every time.",
+        "In a CRIB - A safety-approved crib with a firm, tight-fitting mattress and a fitted sheet only. No bassinets, swings, car seats, bouncers, couches, adult beds, or floor mats are acceptable for sleep."
       ]},
       {subheading: "REQUIRED INFANT SUPERVISION DURING SLEEP", items: [
         "An assigned caregiver must be in the sleep room with infants at all times. Infants are never left unsupervised.",
@@ -1712,7 +1712,7 @@ const FILLABLE_FORMS = [
     title: "Direct Deposit Authorization",
     icon: "\ud83d\udcb3",
     desc: "Employee Payroll Enrollment Form. Authorize direct deposit of your earnings to your bank account or split between two accounts.",
-    tag: "Sensitive Form",
+    tag: "Fillable Form",
     tagClass: "sign",
     intro: "Complete all sections below to enroll in or update your direct deposit. Mark the appropriate selections. Allow up to two pay cycles for direct deposit to take effect. After you submit, attach proof of your routing and account numbers to BHA leadership using one of the methods listed in section 5.",
     fields: [
@@ -1826,6 +1826,12 @@ function AgreementFormView({form, onBack}) {
   const [submitted, setSubmitted] = useState(false);
   const name = getName();
 
+  // Scroll to top whenever this form first renders so staff begin reading
+  // from the start of the policy, not in the middle.
+  useEffect(function(){
+    if(typeof window!=="undefined"){window.scrollTo({top:0,behavior:"instant"})}
+  },[form.id]);
+
   function handleSubmit() {
     setSubmitted(true);
     var now = new Date();
@@ -1921,6 +1927,12 @@ function FillableFormView({form, onBack}) {
   const [signed, setSigned] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const name = getName();
+
+  // Scroll to top whenever this form first renders so staff begin
+  // entering data from the start, not in the middle of the form.
+  useEffect(function(){
+    if(typeof window!=="undefined"){window.scrollTo({top:0,behavior:"instant"})}
+  },[form.id]);
 
   function handleChange(fieldName, val) {
     setValues(function(prev) { var n = Object.assign({}, prev); n[fieldName] = val; return n; });
