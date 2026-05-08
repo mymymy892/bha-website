@@ -1332,7 +1332,7 @@ const AGREEMENT_FORMS = [
       {subheading: "PURPOSE", intro: "Active supervision is the most important responsibility of every BHA employee. A staff member looking at a phone is not actively supervising. Personal phones also create privacy risks for children and families. This policy establishes how phones are handled at BHA so that supervision and privacy remain protected at all times."},
       {subheading: "PERSONAL CELL PHONE USE DURING WORK HOURS", items: [
         "Personal cell phones are not permitted in any classroom, on the playground, in the kitchen during food preparation, or anywhere children are present.",
-        "Personal phones must be stored in the staff lockers, the office, or another designated secure location during all working hours.",
+        "Personal phones must be stored in the front office, the designated staff storage area, or in a personal bag kept out of the classroom during all working hours.",
         "Personal phones may only be used during scheduled breaks, in the staff break area or outside the building, and only when no children are present.",
         "If you are expecting an emergency call (medical, family emergency), notify the Primary Director or designee at the start of your shift. The director will hold your phone and bring it to you immediately if a call comes in.",
         "Calls to and from family members during the workday should be routed through the BHA office line at (469) 807-1221.",
@@ -1867,8 +1867,8 @@ function AgreementFormView({form, onBack}) {
             React.createElement("button", {className: "sv-nav-btn gold", onClick: function(){window.print()}, style: {width: "100%", justifyContent: "center"}}, "\ud83d\udda8\ufe0f Option 1: Print Signed Form"),
             React.createElement("button", {className: "sv-nav-btn", onClick: function(){window.print()}, style: {width: "100%", justifyContent: "center", background: "#1565C0"}}, "\ud83d\udcbe Option 2: Save as PDF (choose \"Save as PDF\" in print window)"),
             React.createElement("button", {className: "sv-nav-btn", onClick: function(){
-              var subj = encodeURIComponent("Signed Form: " + form.title);
-              var body = encodeURIComponent("Signed Form Confirmation\n\nEmployee: " + name + "\nForm: " + form.title + "\nDate Signed: " + dateForEmail + "\nEmail: " + getEmail() + "\n\nThis form has been signed and submitted through the BHA training portal. A copy is on file with leadership. Thank you.");
+              var subj = encodeURIComponent("Signed Form: " + form.title + " - " + name);
+              var body = encodeURIComponent("Hello BHA Leadership,\n\nThis is a confirmation that the following form has been signed and submitted through the BHA Staff Training Portal:\n\nEmployee: " + name + "\nEmployee Email: " + getEmail() + "\nForm: " + form.title + "\nDate Signed: " + dateForEmail + "\n\nA digital record of the signed form, including the employee's signature image, is on file in the BHA admin dashboard.\n\nThank you.");
               window.location.href = "mailto:info@benevolenthouseacademy.org?subject=" + subj + "&body=" + body;
             }, style: {width: "100%", justifyContent: "center", background: "#356933"}}, "\u2709\ufe0f Option 3: Send Confirmation to BHA (opens your email app)")
           ),
@@ -2014,8 +2014,8 @@ function FillableFormView({form, onBack}) {
             React.createElement("button", {className: "sv-nav-btn gold", onClick: function(){window.print()}, style: {width: "100%", justifyContent: "center"}}, "\ud83d\udda8\ufe0f Option 1: Print Completed Form"),
             React.createElement("button", {className: "sv-nav-btn", onClick: function(){window.print()}, style: {width: "100%", justifyContent: "center", background: "#1565C0"}}, "\ud83d\udcbe Option 2: Save as PDF (choose \"Save as PDF\" in print window)"),
             React.createElement("button", {className: "sv-nav-btn", onClick: function(){
-              var subj = encodeURIComponent("Submitted Form: " + form.title);
-              var body = encodeURIComponent("Form Submission Confirmation\n\nEmployee: " + name + "\nForm: " + form.title + "\nDate Submitted: " + subDateStr + "\nEmail: " + getEmail() + "\n\nThis form has been completed and submitted through the BHA training portal. A copy is on file with leadership. Thank you.");
+              var subj = encodeURIComponent("Submitted Form: " + form.title + " - " + name);
+              var body = encodeURIComponent("Hello BHA Leadership,\n\nThis is a confirmation that the following form has been submitted through the BHA Staff Training Portal:\n\nEmployee: " + name + "\nEmployee Email: " + getEmail() + "\nForm: " + form.title + "\nDate Submitted: " + subDateStr + "\n\nA digital record of the completed form, including the employee's signature image and all entered information, is on file in the BHA admin dashboard.\n\nThank you.");
               window.location.href = "mailto:info@benevolenthouseacademy.org?subject=" + subj + "&body=" + body;
             }, style: {width: "100%", justifyContent: "center", background: "#356933"}}, "\u2709\ufe0f Option 3: Send Confirmation to BHA (opens your email app)")
           ),
