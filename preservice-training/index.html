@@ -391,14 +391,15 @@ function logAgreementToJotform(payload){
   try {
     var fd = new FormData();
     fd.append("formID", JOTFORM_AGREEMENTS_ID);
-    if(payload.name)          fd.append("employeeName", payload.name);
-    if(payload.email)         fd.append("emailAddress", payload.email);
-    if(payload.formType)      fd.append("formType", payload.formType);
-    if(payload.formTitle)     fd.append("formTitle", payload.formTitle);
-    if(payload.date)          fd.append("submissionDate", payload.date);
-    if(payload.time)          fd.append("submissionTime", payload.time);
-    if(payload.signatureImage)fd.append("signatureImage", payload.signatureImage);
-    if(payload.formData)      fd.append("formData", payload.formData);
+    // Field names match the actual unique names in Jotform form 261268412415049
+    if(payload.name)          fd.append("q2_textbox0", payload.name);
+    if(payload.email)         fd.append("q3_email1", payload.email);
+    if(payload.formType)      fd.append("q4_dropdown2", payload.formType);
+    if(payload.formTitle)     fd.append("q5_textbox3", payload.formTitle);
+    if(payload.date)          fd.append("q6_textbox4", payload.date);
+    if(payload.time)          fd.append("q7_textbox5", payload.time);
+    if(payload.signatureImage)fd.append("q8_textarea6", payload.signatureImage);
+    if(payload.formData)      fd.append("q9_textarea7", payload.formData);
     fetch(JOTFORM_AGREEMENTS_URL, {
       method: "POST",
       body: fd,
