@@ -11,7 +11,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .hdr{background:#052F59;color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.1)}
 .hdr h1{font-size:20px;font-weight:700}
 .hdr .sub{font-size:12px;color:#C5960C;font-weight:600;margin-top:2px}
-.hdr .right{font-size:12px;color:#cbd5e1}
+.hdr .right{font-size:12px;color:#cbd5e1;display:flex;gap:14px;align-items:center}
+.hdr .right a{color:#cbd5e1;text-decoration:none}
+.hdr .right a:hover{color:#fff}
+.logout-btn{background:transparent;border:1px solid #cbd5e1;color:#cbd5e1;padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer}
+.logout-btn:hover{background:rgba(255,255,255,.1);color:#fff}
 .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
 .card{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.05);padding:20px;margin-bottom:20px}
 .card h2{font-size:18px;color:#052F59;margin-bottom:12px}
@@ -21,31 +25,52 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .btn{background:#C5960C;color:#fff;border:none;padding:10px 18px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer}
 .btn:hover{background:#a67e09}
 .btn-sec{background:#5a6f82}.btn-sec:hover{background:#445767}
-.btn-blue{background:#1565C0}.btn-blue:hover{background:#0d47a1}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:14px}
 .stat{background:#F0F7FF;border-left:4px solid #1565C0;padding:12px 14px;border-radius:6px}
 .stat-label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#5a6f82;font-weight:700}
 .stat-num{font-size:22px;font-weight:700;color:#052F59;margin-top:2px}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{background:#F0F7FF;color:#052F59;text-align:left;padding:10px 8px;font-weight:700;border-bottom:2px solid #1565C0}
-td{padding:9px 8px;border-bottom:1px solid #eee}
+td{padding:9px 8px;border-bottom:1px solid #eee;vertical-align:top}
 tr.row{cursor:pointer;transition:background .15s}
 tr.row:hover{background:#FFF8E1}
 .pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700}
 .pill-pass{background:#C8E6C9;color:#1B5E20}
 .pill-fail{background:#FFCDD2;color:#B71C1C}
+.pill-signed{background:#C8E6C9;color:#1B5E20}
 .empty{padding:40px;text-align:center;color:#5a6f82;font-style:italic}
 .loading{padding:30px;text-align:center;color:#1565C0}
 .error{padding:20px;background:#FFEBEE;color:#B71C1C;border-radius:6px;margin:14px 0}
 .note{padding:12px 14px;background:#FFF8E1;border-left:4px solid #C5960C;border-radius:6px;font-size:13px;color:#4A3A00;margin-bottom:14px}
 
-/* Certificate viewer overlay */
+/* Password gate */
+.gate-wrap{position:fixed;inset:0;background:linear-gradient(135deg,#031D38 0%,#052F59 50%,#0A3A6B 100%);display:flex;align-items:center;justify-content:center;padding:20px;z-index:1000}
+.gate-box{background:#fff;border-radius:14px;padding:36px 32px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
+.gate-box h1{color:#052F59;font-size:22px;margin-bottom:6px}
+.gate-box .gate-sub{color:#C5960C;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px}
+.gate-box p{color:#5a6f82;font-size:13px;margin-bottom:18px;line-height:1.5}
+.gate-input{width:100%;padding:14px;border:2px solid #ddd;border-radius:8px;font-size:16px;outline:none;margin-bottom:14px}
+.gate-input:focus{border-color:#C5960C}
+.gate-btn{width:100%;background:#C5960C;color:#fff;border:none;padding:14px;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer}
+.gate-btn:hover{background:#a67e09}
+.gate-btn:disabled{opacity:.5;cursor:not-allowed}
+.gate-error{color:#C62828;font-size:13px;margin-top:10px;font-weight:600}
+
+/* Tabs */
+.tabs{display:flex;gap:0;margin-bottom:0;border-bottom:2px solid #ddd}
+.tab{background:transparent;border:none;padding:14px 20px;font-size:14px;font-weight:600;color:#5a6f82;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s}
+.tab:hover{color:#052F59;background:#F0F7FF}
+.tab.active{color:#052F59;border-bottom-color:#C5960C;background:#fff}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* Modal viewer */
 .viewer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;overflow-y:auto;padding:20px}
 .viewer-box{max-width:850px;margin:0 auto;background:#fff;border-radius:10px;padding:0;box-shadow:0 10px 40px rgba(0,0,0,.3)}
-.viewer-hdr{background:#052F59;color:#fff;padding:14px 20px;border-radius:10px 10px 0 0;display:flex;justify-content:space-between;align-items:center}
+.viewer-hdr{background:#052F59;color:#fff;padding:14px 20px;border-radius:10px 10px 0 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .viewer-hdr h3{font-size:16px}
 .viewer-close{background:#fff;color:#052F59;border:none;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;font-weight:700}
-.viewer-body{padding:24px}
+.viewer-body{padding:24px;background:#F5F7FA}
 .viewer-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:14px 20px;background:#F5F7FA;border-radius:0 0 10px 10px}
 
 /* Certificate styling - matches main portal */
@@ -70,13 +95,44 @@ tr.row:hover{background:#FFF8E1}
 .detail-meta{background:#F0F7FF;padding:12px 14px;border-radius:6px;margin-bottom:14px;font-size:12px}
 .detail-meta strong{color:#052F59}
 
+/* Visual-match agreement and form rendering (mirrors portal styling) */
+.printable{background:#fff;max-width:800px;margin:0 auto;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#0D2B4E}
+.printable-card{background:#fff;border:2px solid #C5960C;border-radius:8px;padding:36px 32px}
+.printable-logo{height:60px;display:block;margin:0 auto 8px}
+.printable h2{text-align:center;color:#052F59;font-size:22px;margin-bottom:4px}
+.printable .printable-tagline{text-align:center;font-size:11px;color:#C5960C;font-style:italic;margin-bottom:6px}
+.printable .printable-contact{text-align:center;font-size:11px;color:#5a6f82;margin-bottom:20px}
+.printable .printable-title{text-align:center;font-size:18px;font-weight:700;color:#052F59;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;padding-bottom:8px;border-bottom:3px solid #C5960C}
+.printable .printable-subtitle{text-align:center;font-size:13px;color:#5a6f82;font-style:italic;margin-bottom:24px}
+.printable h3{color:#052F59;font-size:15px;font-weight:700;margin-top:18px;margin-bottom:10px;border-left:4px solid #C5960C;padding-left:10px}
+.printable h4{color:#052F59;font-size:13px;font-weight:700;margin-top:14px;margin-bottom:6px}
+.printable p{font-size:13px;line-height:1.6;margin-bottom:10px;color:#0D2B4E}
+.printable ul{margin-left:22px;margin-bottom:12px}
+.printable li{font-size:13px;line-height:1.6;margin-bottom:6px}
+.printable .form-row{display:grid;gap:14px;margin-bottom:12px}
+.printable .form-field{margin-bottom:6px}
+.printable .form-label{display:block;font-size:11px;color:#5a6f82;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.printable .form-value{display:block;border-bottom:1px solid #999;padding:4px 6px;font-size:13px;color:#0D2B4E;min-height:22px;background:#FAFAFA}
+.printable .form-value.empty{color:#999;font-style:italic}
+.printable .form-value.masked{color:#5a6f82;font-family:Monaco,Consolas,monospace}
+.printable .section-intro{font-size:12px;color:#5a6f82;font-style:italic;margin-bottom:12px;line-height:1.5;white-space:pre-wrap}
+.printable .form-intro{background:#FFF8E1;border-left:4px solid #C5960C;padding:12px 14px;border-radius:6px;font-size:13px;color:#4A3A00;margin-bottom:18px;line-height:1.5}
+.printable .signature-section{margin-top:28px;padding-top:20px;border-top:2px solid #C5960C}
+.printable .signature-img{max-width:300px;max-height:120px;border:1px solid #ddd;background:#fff;padding:6px;display:block;margin-top:8px}
+.printable .director-line{margin-top:30px;padding-top:14px;border-top:1px solid #ccc;font-size:13px}
+.printable .office-use{margin-top:30px;padding:14px;border:1px dashed #999;border-radius:6px;background:#F9F9F9}
+.printable .office-use h4{margin-top:0;color:#5a6f82}
+.printable .office-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
+.printable .footer-note{margin-top:24px;font-size:10px;color:#5a6f82;font-style:italic;text-align:center}
+
 @media print {
   body{background:#fff}
-  .hdr,.toolbar,.stats,.note,.viewer-hdr,.viewer-actions,.no-print{display:none !important}
+  .hdr,.toolbar,.stats,.note,.viewer-hdr,.viewer-actions,.no-print,.tabs,.gate-wrap{display:none !important}
   .viewer-overlay{position:static;background:#fff;padding:0;overflow:visible}
   .viewer-box{box-shadow:none;border-radius:0;max-width:none}
-  .viewer-body{padding:0}
-  .cert,.detail-page{box-shadow:none;border-radius:0;margin:0;max-width:none}
+  .viewer-body{padding:0;background:#fff}
+  .cert,.detail-page,.printable{box-shadow:none;border-radius:0;margin:0;max-width:none;border:none}
+  .printable-card{border:none;padding:0}
 }
 
 @media (max-width:640px){
@@ -89,174 +145,293 @@ tr.row:hover{background:#FFF8E1}
   .cert .name{font-size:24px}
   .cert .module{font-size:18px}
   .cert .meta{grid-template-columns:1fr}
+  .tab{padding:12px 14px;font-size:13px}
+  .printable-card{padding:20px 14px}
 }
 </style>
 </head>
 <body>
-<div class="hdr no-print">
-  <div>
-    <h1>BHA Training Portal - Admin</h1>
-    <div class="sub">Staff Completion Records</div>
-  </div>
-  <div class="right">
-    <a href="/preservice-training/" style="color:#cbd5e1;text-decoration:none">&larr; Back to Portal</a>
+
+<!-- Password gate -->
+<div class="gate-wrap" id="gate">
+  <div class="gate-box">
+    <h1>Benevolent House Academy</h1>
+    <div class="gate-sub">Admin Access</div>
+    <p>This page contains confidential staff records. Enter the admin password to continue.</p>
+    <input class="gate-input" type="password" id="gate-pw" placeholder="Admin password" />
+    <button class="gate-btn" id="gate-submit">Sign In</button>
+    <div class="gate-error" id="gate-error" style="display:none"></div>
   </div>
 </div>
 
-<div class="wrap">
-  <div class="note no-print">
-    <strong>This page is for BHA leadership only.</strong> It pulls completion records from Jotform.
-    Click any row to view and print the full 3-page certificate package for that staff member's training completion.
-  </div>
-
-  <div class="card no-print">
-    <h2>Quick Stats</h2>
-    <div class="stats" id="stats">
-      <div class="stat"><div class="stat-label">Total Records</div><div class="stat-num" id="stat-total">--</div></div>
-      <div class="stat"><div class="stat-label">Passed</div><div class="stat-num" id="stat-pass">--</div></div>
-      <div class="stat"><div class="stat-label">Failed</div><div class="stat-num" id="stat-fail">--</div></div>
-      <div class="stat"><div class="stat-label">Unique Staff</div><div class="stat-num" id="stat-staff">--</div></div>
+<!-- Main content (hidden until authenticated) -->
+<div id="main" style="display:none">
+  <div class="hdr no-print">
+    <div>
+      <h1>BHA Training Portal - Admin</h1>
+      <div class="sub">Staff Records Dashboard</div>
+    </div>
+    <div class="right">
+      <a href="/preservice-training/">&larr; Back to Portal</a>
+      <button class="logout-btn" id="logout-btn">Sign Out</button>
     </div>
   </div>
 
-  <div class="card no-print">
-    <h2>All Completions</h2>
-    <div class="toolbar">
-      <input class="search" id="search" placeholder="Search by name, email, or module..." />
-      <button class="btn btn-sec" id="refresh">Refresh</button>
+  <div class="wrap">
+    <div class="note no-print">
+      <strong>This page is for BHA leadership only.</strong> Switch between tabs to view training completions and signed agreement forms. Click any row to view and print the full record.
     </div>
-    <div id="content"><div class="loading">Loading completion records...</div></div>
+
+    <div class="card no-print" style="padding:0;overflow:hidden">
+      <div class="tabs">
+        <button class="tab active" data-tab="completions" id="tab-completions">Training Completions</button>
+        <button class="tab" data-tab="agreements" id="tab-agreements">Signed Agreements</button>
+      </div>
+
+      <div class="tab-content active" id="tab-completions-content" style="padding:20px">
+        <div class="stats">
+          <div class="stat"><div class="stat-label">Total Records</div><div class="stat-num" id="cstat-total">--</div></div>
+          <div class="stat"><div class="stat-label">Passed</div><div class="stat-num" id="cstat-pass">--</div></div>
+          <div class="stat"><div class="stat-label">Failed</div><div class="stat-num" id="cstat-fail">--</div></div>
+          <div class="stat"><div class="stat-label">Unique Staff</div><div class="stat-num" id="cstat-staff">--</div></div>
+        </div>
+        <div class="toolbar">
+          <input class="search" id="csearch" placeholder="Search by name, email, or module..." />
+          <button class="btn btn-sec" id="crefresh">Refresh</button>
+        </div>
+        <div id="ccontent"><div class="loading">Loading completion records...</div></div>
+      </div>
+
+      <div class="tab-content" id="tab-agreements-content" style="padding:20px">
+        <div class="stats">
+          <div class="stat"><div class="stat-label">Total Signed</div><div class="stat-num" id="astat-total">--</div></div>
+          <div class="stat"><div class="stat-label">Unique Staff</div><div class="stat-num" id="astat-staff">--</div></div>
+          <div class="stat"><div class="stat-label">Form Types</div><div class="stat-num" id="astat-types">--</div></div>
+        </div>
+        <div class="toolbar">
+          <input class="search" id="asearch" placeholder="Search by name, email, or form type..." />
+          <button class="btn btn-sec" id="arefresh">Refresh</button>
+        </div>
+        <div id="acontent"><div class="loading">Loading signed agreements...</div></div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Certificate viewer overlay -->
 <div id="viewer" style="display:none"></div>
 
 <script>
 // ============================================================
+// PASSWORD GATE
+// ============================================================
+// SHA-256 hash of the admin password. The actual password is never stored
+// in source. Authentication compares the hash of user input to this value.
+// To change the password: hash your new password with SHA-256 and replace
+// this string. (Use any online SHA-256 tool or "echo -n 'pw' | shasum -a 256")
+const ADMIN_PASSWORD_HASH = "fbf1a742ecb4f7cb69468fdc4472fcb50d11f59b2865a526e81f16bb2f72dd69";
+const SESSION_KEY = "bha_admin_session";
+
+// SHA-256 hashing using Web Crypto API
+async function sha256(text){
+  const buf = new TextEncoder().encode(text);
+  const hash = await crypto.subtle.digest("SHA-256", buf);
+  return Array.from(new Uint8Array(hash)).map(function(b){return b.toString(16).padStart(2,"0")}).join("");
+}
+
+async function checkPassword(){
+  const pw = document.getElementById("gate-pw").value;
+  const errEl = document.getElementById("gate-error");
+  errEl.style.display = "none";
+  if (!pw) {
+    errEl.textContent = "Password required.";
+    errEl.style.display = "block";
+    return;
+  }
+  try {
+    const hash = await sha256(pw);
+    if (hash === ADMIN_PASSWORD_HASH) {
+      // Save session for this browser tab/session
+      try { sessionStorage.setItem(SESSION_KEY, "1"); } catch(e){}
+      showMain();
+    } else {
+      errEl.textContent = "Incorrect password.";
+      errEl.style.display = "block";
+      document.getElementById("gate-pw").value = "";
+    }
+  } catch(e) {
+    errEl.textContent = "Authentication error: " + e.message;
+    errEl.style.display = "block";
+  }
+}
+
+function showMain(){
+  document.getElementById("gate").style.display = "none";
+  document.getElementById("main").style.display = "block";
+  // Bootstrap data load
+  loadCompletions();
+}
+
+function logout(){
+  try { sessionStorage.removeItem(SESSION_KEY); } catch(e){}
+  document.getElementById("main").style.display = "none";
+  document.getElementById("gate").style.display = "flex";
+  document.getElementById("gate-pw").value = "";
+}
+
+// On load: check session
+(function(){
+  try {
+    if (sessionStorage.getItem(SESSION_KEY) === "1") {
+      showMain();
+      return;
+    }
+  } catch(e){}
+  // Wire up gate
+  document.getElementById("gate-submit").addEventListener("click", checkPassword);
+  document.getElementById("gate-pw").addEventListener("keydown", function(e){
+    if (e.key === "Enter") checkPassword();
+  });
+  document.getElementById("gate-pw").focus();
+})();
+
+// ============================================================
 // JOTFORM API CONFIGURATION
 // ============================================================
-// This is a READ-ONLY key. It can only view records, not modify them.
-// SECURITY NOTE: This key is visible in the page source. The admin URL is
-// unlisted (not linked from the public portal) and meant for BHA leadership
-// only. Do not share this URL.
-// ============================================================
 const JOTFORM_API_KEY = "e76cfe7b6efaa7a3829725568b4cf445";
-const JOTFORM_FORM_ID = "261255295349060";
-// ============================================================
+const JOTFORM_COMPLETIONS_FORM_ID = "261255295349060";
+const JOTFORM_AGREEMENTS_FORM_ID = "261268412415049";
 
-const FIELD_MAP = {
-  // Maps Jotform field names → our internal field names.
-  // The Jotform API returns answers keyed by question number, with each answer
-  // having a 'name' property matching the unique name set in the form builder.
-  textbox0: "name",        // Employee Name (q2_textbox0)
-  emailAddress: "email",   // Email Address
-  dropdown1: "moduleNumber", // Module Number (q3_dropdown1)
-  textbox2: "moduleTitle",   // Module Title (q4_textbox2)
-  number3: "score",          // Quiz Score (q5_number3)
-  dropdown4: "passFail",     // Pass or Fail (q6_dropdown4)
-  datetime5: "date",         // Completion Date (q7_datetime5)
-  time6: "time",             // Completion Time (q8_time6)
-  number7: "hours",          // Training Hours (q9_number7)
-  textbox8: "code",          // Verification Code (q10_textbox8)
-  textarea9: "topics"        // Topics Covered (q11_textarea9)
+const COMPLETION_FIELD_MAP = {
+  textbox0: "name",
+  emailAddress: "email",
+  dropdown1: "moduleNumber",
+  textbox2: "moduleTitle",
+  number3: "score",
+  dropdown4: "passFail",
+  datetime5: "date",
+  time6: "time",
+  number7: "hours",
+  textbox8: "code",
+  textarea9: "topics"
 };
 
-let allRecords = [];
-let filteredRecords = [];
+const AGREEMENT_FIELD_MAP = {
+  employeeName: "name",
+  emailAddress: "email",
+  formType: "formType",
+  formTitle: "formTitle",
+  submissionDate: "date",
+  submissionTime: "time",
+  signatureImage: "signature",
+  formData: "formData"
+};
+
+const MODULE_TOPICS = {
+  1: "Center overview, ratios, supervision, arrival/departure, Brightwheel, dress code, cell phone policy, safe sleep basics. (TAC 746.1303(1)(2)(3)(4)(5))",
+  2: "TAC 746 Minimum Standards, inspections, staff qualifications, background checks, ratios, record keeping, fire/weather drills, transportation, discipline standards, reporting requirements. (TAC 746.1303(1)(11))",
+  3: "Trauma-informed care foundations, ACEs, the Four Rs, physical and emotional safety, predictable routines, calm-down corner, co-regulation, building resilience, secondary traumatic stress. (TAC 746.1303(7)(8))",
+  4: "BHA's guidance philosophy, prohibited discipline, age-appropriate expectations, redirection, natural and logical consequences, biting protocol, regulate-before-redirect, character development framework, daily check-in. (TAC 746.1303(7))",
+  5: "Emergency preparedness, R.A.C.E. fire procedures, severe weather, lockdown, medical emergencies, first aid, choking response, illness policies, medication administration, safe sleep, missing child procedure. (TAC 746.1303(2)(3)(4)(9))",
+  6: "Mandatory reporter obligations, child abuse and neglect definitions, physical and behavioral signs, Texas Abuse Hotline, disclosure response, documentation, retaliation protections. (TAC 746.1303(11))",
+  7: "Daily workflow, attendance, CACFP meal documentation, Brightwheel logging, Experience Curriculum, classroom setup, transitions, rest time, parent communication, closing procedures. (TAC 746.1303(5)(6)(10))",
+  8: "Professionalism, dress code, cell phone policy, confidentiality, social media policy, FERPA, teamwork, conflict resolution, attendance, chain of command, parent complaints, BHA culture. (TAC 746.1303(1)(11))"
+};
+
+// BHA logo (base64-encoded). Used for letterhead in printable records.
+// This is a placeholder small image; the portal already has full BHA logos.
+const BHA_LOGO = "https://benevolenthouseacademy.org/preservice-training/bha-logo.png";
+
+let allCompletions = [];
+let filteredCompletions = [];
+let allAgreements = [];
+let filteredAgreements = [];
 
 function $(id){return document.getElementById(id)}
 function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 
-// Jotform's API returns answers in different shapes depending on the field type:
-//   - Plain string for textboxes, numbers, dropdowns, time
-//   - Object {day, month, year, datetime, ...} for datetime
-//   - Object {first, last} for full-name fields (we don't use these)
-// This helper normalizes everything to a usable string.
+// Mask sensitive fields. Show only the last 4 characters.
+// "1234567890" -> "******7890". For SSN last-4 we mask all 4 -> "****".
+function maskSensitive(value, fieldName){
+  if (!value) return value;
+  var s = String(value);
+  // SSN field: mask completely
+  if (fieldName && fieldName.toLowerCase().indexOf("ssn") !== -1) {
+    return s.replace(/./g, "*");
+  }
+  // Account/routing: show last 4
+  if (s.length <= 4) return s.replace(/./g, "*");
+  return s.slice(0, s.length - 4).replace(/./g, "*") + s.slice(-4);
+}
+
 function normalizeAnswer(value, prettyFormat){
   if (value == null || value === "") return "";
   if (typeof value === "string") return value;
   if (typeof value === "number") return String(value);
-  // If a prettyFormat string is provided, prefer it (Jotform pre-formats dates/times)
   if (prettyFormat && typeof prettyFormat === "string") return prettyFormat;
   if (typeof value === "object") {
-    // Datetime object
-    if (value.month && value.day && value.year) {
-      return value.month + "/" + value.day + "/" + value.year;
-    }
-    // Time object
+    if (value.month && value.day && value.year) return value.month + "/" + value.day + "/" + value.year;
     if (value.hour && value.min) {
       var ampm = value.ampm ? " " + value.ampm : "";
       return value.hour + ":" + value.min + ampm;
     }
-    // Datetime-with-time object
     if (value.datetime) return value.datetime;
-    // Generic object: try common single-value paths
     if (value.value) return String(value.value);
-    // Fall back to JSON for inspection (rare)
     try { return JSON.stringify(value); } catch(e) { return ""; }
   }
   return String(value);
 }
 
-async function loadRecords(){
-  $("content").innerHTML='<div class="loading">Loading completion records from Jotform...</div>';
+async function loadJotformRecords(formId, fieldMap){
+  if (!JOTFORM_API_KEY) throw new Error("API key not configured");
+  const url = "https://api.jotform.com/form/" + formId + "/submissions?apiKey=" + encodeURIComponent(JOTFORM_API_KEY) + "&limit=1000&orderby=created_at&direction=DESC";
+  const res = await fetch(url);
+  const data = await res.json();
+  if (data.responseCode !== 200) throw new Error(data.message || "Unknown Jotform error");
+  return (data.content || []).map(function(sub){
+    const r = { _id: sub.id, _created: sub.created_at };
+    const answers = sub.answers || {};
+    Object.keys(answers).forEach(function(q){
+      const ans = answers[q];
+      const name = ans.name;
+      const value = normalizeAnswer(ans.answer, ans.prettyFormat);
+      if (fieldMap[name] && value) r[fieldMap[name]] = value;
+    });
+    return r;
+  }).filter(function(r){return r.name});
+}
 
-  if (JOTFORM_API_KEY === "PASTE_YOUR_READ_ONLY_API_KEY_HERE" || !JOTFORM_API_KEY) {
-    $("content").innerHTML = '<div class="error"><strong>Setup required:</strong> Open admin.html and paste your Jotform API key on line 165 (the line marked JOTFORM_API_KEY). See the comment block above that line for instructions on how to create a read-only key.</div>';
-    return;
-  }
-
+// =================== COMPLETIONS TAB ===================
+async function loadCompletions(){
+  $("ccontent").innerHTML='<div class="loading">Loading completion records...</div>';
   try {
-    // Pull up to 1000 submissions. Sorted by submission date descending.
-    const url = "https://api.jotform.com/form/" + JOTFORM_FORM_ID + "/submissions?apiKey=" + encodeURIComponent(JOTFORM_API_KEY) + "&limit=1000&orderby=created_at&direction=DESC";
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (data.responseCode !== 200) {
-      $("content").innerHTML = '<div class="error"><strong>Jotform error:</strong> ' + escapeHtml(data.message || "Unknown error") + '. Verify your API key is correct and has read access.</div>';
-      return;
-    }
-
-    allRecords = (data.content || []).map(function(sub){
-      const r = { _id: sub.id, _created: sub.created_at };
-      const answers = sub.answers || {};
-      Object.keys(answers).forEach(function(q){
-        const ans = answers[q];
-        const name = ans.name;
-        const value = normalizeAnswer(ans.answer, ans.prettyFormat);
-        if (FIELD_MAP[name] && value) r[FIELD_MAP[name]] = value;
-      });
-      return r;
-    }).filter(function(r){return r.name});
-
-    filteredRecords = allRecords.slice();
-    renderStats();
-    renderTable();
+    allCompletions = await loadJotformRecords(JOTFORM_COMPLETIONS_FORM_ID, COMPLETION_FIELD_MAP);
+    filteredCompletions = allCompletions.slice();
+    renderCompletionsStats();
+    renderCompletionsTable();
   } catch (err) {
-    $("content").innerHTML = '<div class="error"><strong>Network error:</strong> ' + escapeHtml(err.message) + '. Check your internet connection.</div>';
+    $("ccontent").innerHTML = '<div class="error"><strong>Error:</strong> ' + escapeHtml(err.message) + '</div>';
   }
 }
 
-function renderStats(){
-  const total = allRecords.length;
-  const passed = allRecords.filter(function(r){return (r.passFail||"").toUpperCase()==="PASS"}).length;
+function renderCompletionsStats(){
+  const total = allCompletions.length;
+  const passed = allCompletions.filter(function(r){return (r.passFail||"").toUpperCase()==="PASS"}).length;
   const failed = total - passed;
-  const uniqueStaff = new Set(allRecords.map(function(r){return (r.email||r.name||"").toLowerCase()})).size;
-  $("stat-total").textContent = total;
-  $("stat-pass").textContent = passed;
-  $("stat-fail").textContent = failed;
-  $("stat-staff").textContent = uniqueStaff;
+  const uniqueStaff = new Set(allCompletions.map(function(r){return (r.email||r.name||"").toLowerCase()})).size;
+  $("cstat-total").textContent = total;
+  $("cstat-pass").textContent = passed;
+  $("cstat-fail").textContent = failed;
+  $("cstat-staff").textContent = uniqueStaff;
 }
 
-function renderTable(){
-  if (!filteredRecords.length) {
-    $("content").innerHTML = '<div class="empty">No completion records yet. As staff complete modules, their records will appear here.</div>';
+function renderCompletionsTable(){
+  if (!filteredCompletions.length) {
+    $("ccontent").innerHTML = '<div class="empty">No completion records yet. As staff complete modules, their records will appear here.</div>';
     return;
   }
   let html = '<div style="overflow-x:auto"><table>';
   html += '<thead><tr><th>Date</th><th>Staff Name</th><th>Email</th><th>Module</th><th>Score</th><th>Result</th><th>Hours</th></tr></thead><tbody>';
-  filteredRecords.forEach(function(r,i){
+  filteredCompletions.forEach(function(r,i){
     const passed = (r.passFail||"").toUpperCase()==="PASS";
     html += '<tr class="row" data-i="' + i + '">';
     html += '<td>' + escapeHtml(r.date||"--") + '<br><span style="font-size:10px;color:#5a6f82">' + escapeHtml(r.time||"") + '</span></td>';
@@ -269,42 +444,28 @@ function renderTable(){
     html += '</tr>';
   });
   html += '</tbody></table></div>';
-  $("content").innerHTML = html;
-
-  // Wire up row clicks
-  document.querySelectorAll("tr.row").forEach(function(tr){
+  $("ccontent").innerHTML = html;
+  document.querySelectorAll("#ccontent tr.row").forEach(function(tr){
     tr.addEventListener("click", function(){
       const idx = parseInt(tr.getAttribute("data-i"), 10);
-      openCertViewer(filteredRecords[idx]);
+      openCertViewer(filteredCompletions[idx]);
     });
   });
 }
 
-function applyFilter(){
-  const q = $("search").value.trim().toLowerCase();
-  if (!q) { filteredRecords = allRecords.slice(); }
+function applyCompletionsFilter(){
+  const q = $("csearch").value.trim().toLowerCase();
+  if (!q) { filteredCompletions = allCompletions.slice(); }
   else {
-    filteredRecords = allRecords.filter(function(r){
+    filteredCompletions = allCompletions.filter(function(r){
       return (r.name||"").toLowerCase().indexOf(q) !== -1 ||
              (r.email||"").toLowerCase().indexOf(q) !== -1 ||
              (r.moduleTitle||"").toLowerCase().indexOf(q) !== -1 ||
              ("module " + (r.moduleNumber||"")).toLowerCase().indexOf(q) !== -1;
     });
   }
-  renderTable();
+  renderCompletionsTable();
 }
-
-// Module-to-TAC reference mapping (mirrors the main portal MODULES array)
-const MODULE_TOPICS = {
-  1: "Center overview, ratios, supervision, arrival/departure, Brightwheel, dress code, cell phone policy, safe sleep basics. (TAC 746.1303(1)(2)(3)(4)(5))",
-  2: "TAC 746 Minimum Standards, inspections, staff qualifications, background checks, ratios, record keeping, fire/weather drills, transportation, discipline standards, reporting requirements. (TAC 746.1303(1)(11))",
-  3: "Trauma-informed care foundations, ACEs, the Four Rs, physical and emotional safety, predictable routines, calm-down corner, co-regulation, building resilience, secondary traumatic stress. (TAC 746.1303(7)(8))",
-  4: "BHA's guidance philosophy, prohibited discipline, age-appropriate expectations, redirection, natural and logical consequences, biting protocol, regulate-before-redirect, character development framework, daily check-in. (TAC 746.1303(7))",
-  5: "Emergency preparedness, R.A.C.E. fire procedures, severe weather, lockdown, medical emergencies, first aid, choking response, illness policies, medication administration, safe sleep, missing child procedure. (TAC 746.1303(2)(3)(4)(9))",
-  6: "Mandatory reporter obligations, child abuse and neglect definitions, physical and behavioral signs, Texas Abuse Hotline, disclosure response, documentation, retaliation protections. (TAC 746.1303(11))",
-  7: "Daily workflow, attendance, CACFP meal documentation, Brightwheel logging, Experience Curriculum, classroom setup, transitions, rest time, parent communication, closing procedures. (TAC 746.1303(5)(6)(10))",
-  8: "Professionalism, dress code, cell phone policy, confidentiality, social media policy, FERPA, teamwork, conflict resolution, attendance, chain of command, parent complaints, BHA culture. (TAC 746.1303(1)(11))"
-};
 
 function openCertViewer(r) {
   const passed = (r.passFail||"").toUpperCase() === "PASS";
@@ -313,10 +474,9 @@ function openCertViewer(r) {
   const topics = r.topics || MODULE_TOPICS[moduleNum] || "";
 
   let html = '<div class="viewer-overlay"><div class="viewer-box">';
-  html += '<div class="viewer-hdr no-print"><h3>Certificate Package: ' + escapeHtml(r.name) + ' - Module ' + escapeHtml(moduleNum) + '</h3><button class="viewer-close" onclick="closeCertViewer()">&times;</button></div>';
+  html += '<div class="viewer-hdr no-print"><h3>Certificate Package: ' + escapeHtml(r.name) + ' - Module ' + escapeHtml(moduleNum) + '</h3><button class="viewer-close" onclick="closeViewer()">&times;</button></div>';
   html += '<div class="viewer-body">';
 
-  // Page 1: Certificate
   html += '<div class="cert">';
   html += '<div class="gold-bar"></div>';
   html += '<h2>Benevolent House Academy</h2>';
@@ -335,7 +495,6 @@ function openCertViewer(r) {
   html += '<div class="verify">Verification Code: ' + escapeHtml(r.code || "--") + '</div>';
   html += '</div>';
 
-  // Page 2: Training Content Detail
   html += '<div class="detail-page">';
   html += '<h3>Training Content Detail</h3>';
   html += '<div class="detail-meta"><strong>Employee:</strong> ' + escapeHtml(r.name) + ' &nbsp;|&nbsp; ';
@@ -348,10 +507,9 @@ function openCertViewer(r) {
   html += '<p><strong>Verification Code:</strong> ' + escapeHtml(r.code || "--") + '</p>';
   html += '<p style="margin-top:14px"><strong>Topics Covered:</strong></p>';
   html += '<p style="font-size:12px;line-height:1.6">' + escapeHtml(topics) + '</p>';
-  html += '<p style="margin-top:18px;font-size:11px;color:#5a6f82;font-style:italic">This documentation is maintained per Texas Administrative Code Chapter 746 requirements for staff training records. Place a printed copy in the employee file.</p>';
+  html += '<p style="margin-top:18px;font-size:11px;color:#5a6f82;font-style:italic">This documentation is maintained per Texas Administrative Code Chapter 746 requirements for staff training records.</p>';
   html += '</div>';
 
-  // Page 3: Compliance Acknowledgment
   html += '<div class="detail-page">';
   html += '<h3>Compliance Acknowledgment</h3>';
   html += '<div class="detail-meta"><strong>Employee:</strong> ' + escapeHtml(r.name) + ' &nbsp;|&nbsp; <strong>Module:</strong> ' + escapeHtml(moduleNum) + '</div>';
@@ -370,29 +528,306 @@ function openCertViewer(r) {
   html += '</div>';
   html += '</div>';
 
-  html += '</div>'; // viewer-body
-
-  html += '<div class="viewer-actions no-print">';
-  html += '<button class="btn" onclick="window.print()">&#128424; Print All 3 Pages</button>';
-  html += '<button class="btn btn-sec" onclick="closeCertViewer()">Close</button>';
   html += '</div>';
-
-  html += '</div></div>'; // viewer-box, viewer-overlay
+  html += '<div class="viewer-actions no-print">';
+  html += '<button class="btn" onclick="window.print()">Print All 3 Pages</button>';
+  html += '<button class="btn btn-sec" onclick="closeViewer()">Close</button>';
+  html += '</div>';
+  html += '</div></div>';
   $("viewer").innerHTML = html;
   $("viewer").style.display = "block";
 }
 
-function closeCertViewer(){
+// =================== AGREEMENTS TAB ===================
+async function loadAgreements(){
+  $("acontent").innerHTML='<div class="loading">Loading signed agreements...</div>';
+  try {
+    allAgreements = await loadJotformRecords(JOTFORM_AGREEMENTS_FORM_ID, AGREEMENT_FIELD_MAP);
+    filteredAgreements = allAgreements.slice();
+    renderAgreementsStats();
+    renderAgreementsTable();
+  } catch (err) {
+    $("acontent").innerHTML = '<div class="error"><strong>Error:</strong> ' + escapeHtml(err.message) + '</div>';
+  }
+}
+
+function renderAgreementsStats(){
+  const total = allAgreements.length;
+  const uniqueStaff = new Set(allAgreements.map(function(r){return (r.email||r.name||"").toLowerCase()})).size;
+  const uniqueTypes = new Set(allAgreements.map(function(r){return (r.formType||"").toLowerCase()}).filter(Boolean)).size;
+  $("astat-total").textContent = total;
+  $("astat-staff").textContent = uniqueStaff;
+  $("astat-types").textContent = uniqueTypes;
+}
+
+function renderAgreementsTable(){
+  if (!filteredAgreements.length) {
+    $("acontent").innerHTML = '<div class="empty">No signed agreements yet. As staff sign and submit agreement forms, their records will appear here.</div>';
+    return;
+  }
+  let html = '<div style="overflow-x:auto"><table>';
+  html += '<thead><tr><th>Date</th><th>Staff Name</th><th>Email</th><th>Form Type</th><th>Signature</th></tr></thead><tbody>';
+  filteredAgreements.forEach(function(r,i){
+    const hasSig = !!(r.signature && r.signature.length > 50);
+    html += '<tr class="row" data-i="' + i + '">';
+    html += '<td>' + escapeHtml(r.date||"--") + '<br><span style="font-size:10px;color:#5a6f82">' + escapeHtml(r.time||"") + '</span></td>';
+    html += '<td><strong>' + escapeHtml(r.name||"--") + '</strong></td>';
+    html += '<td style="font-size:12px;color:#5a6f82">' + escapeHtml(r.email||"--") + '</td>';
+    html += '<td>' + escapeHtml(r.formType||r.formTitle||"--") + '</td>';
+    html += '<td>' + (hasSig?'<span class="pill pill-signed">Signed</span>':'<span style="color:#5a6f82;font-size:11px">No signature</span>') + '</td>';
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  $("acontent").innerHTML = html;
+  document.querySelectorAll("#acontent tr.row").forEach(function(tr){
+    tr.addEventListener("click", function(){
+      const idx = parseInt(tr.getAttribute("data-i"), 10);
+      openAgreementViewer(filteredAgreements[idx]);
+    });
+  });
+}
+
+function applyAgreementsFilter(){
+  const q = $("asearch").value.trim().toLowerCase();
+  if (!q) { filteredAgreements = allAgreements.slice(); }
+  else {
+    filteredAgreements = allAgreements.filter(function(r){
+      return (r.name||"").toLowerCase().indexOf(q) !== -1 ||
+             (r.email||"").toLowerCase().indexOf(q) !== -1 ||
+             (r.formType||"").toLowerCase().indexOf(q) !== -1 ||
+             (r.formTitle||"").toLowerCase().indexOf(q) !== -1;
+    });
+  }
+  renderAgreementsTable();
+}
+
+// =================== VISUAL-MATCH PRINTABLE RENDERING ===================
+// Render an agreement record as it appeared on screen to the staff member.
+function renderAgreementVisual(parsed, r){
+  let html = '<div class="printable"><div class="printable-card">';
+  html += '<img class="printable-logo" src="' + BHA_LOGO + '" alt="BHA" onerror="this.style.display=\'none\'" />';
+  html += '<h2>Benevolent House Academy</h2>';
+  html += '<div class="printable-tagline">Where Foundations Become Futures</div>';
+  html += '<div class="printable-contact">508 N State Hwy 342, Red Oak, TX 75154 | (469) 807-1221</div>';
+  html += '<div class="printable-title">' + escapeHtml(parsed.title || r.formType || "Agreement") + '</div>';
+  if (parsed.tacRef) html += '<div class="printable-subtitle">' + escapeHtml(parsed.tacRef) + '</div>';
+
+  // Render sections
+  (parsed.sections || []).forEach(function(s){
+    if (s.heading)    html += '<h3>' + escapeHtml(s.heading) + '</h3>';
+    if (s.subheading) html += '<h4>' + escapeHtml(s.subheading) + '</h4>';
+    if (s.intro)      html += '<p>' + escapeHtml(s.intro) + '</p>';
+    if (s.items && s.items.length) {
+      html += '<ul>';
+      s.items.forEach(function(it){ html += '<li>' + escapeHtml(it) + '</li>'; });
+      html += '</ul>';
+    }
+  });
+
+  // Identity section
+  html += '<div class="signature-section">';
+  html += '<div class="form-row" style="grid-template-columns:1fr 1fr">';
+  html += '<div class="form-field"><span class="form-label">Employee Name</span><span class="form-value">' + escapeHtml(r.name || "--") + '</span></div>';
+  html += '<div class="form-field"><span class="form-label">Email</span><span class="form-value">' + escapeHtml(r.email || "--") + '</span></div>';
+  html += '<div class="form-field"><span class="form-label">Date Signed</span><span class="form-value">' + escapeHtml(r.date || "--") + '</span></div>';
+  html += '<div class="form-field"><span class="form-label">Time Signed</span><span class="form-value">' + escapeHtml(r.time || "--") + '</span></div>';
+  html += '</div>';
+
+  // Signature
+  html += '<div style="margin-top:14px">';
+  html += '<span class="form-label">Employee Signature</span>';
+  if (r.signature && r.signature.length > 50) {
+    var sigSrc = r.signature.indexOf("data:image") === 0 ? r.signature : ("data:image/png;base64," + r.signature);
+    html += '<img class="signature-img" src="' + escapeHtml(sigSrc) + '" alt="Signature" />';
+  } else {
+    html += '<p style="color:#5a6f82;font-style:italic;margin-top:8px">No signature captured.</p>';
+  }
+  html += '</div>';
+
+  // Director countersign line
+  html += '<div class="director-line">';
+  html += '<p><strong>Director Signature:</strong> __________________________________________ &nbsp; <strong>Date:</strong> _____________</p>';
+  html += '</div>';
+
+  html += '</div>';
+  html += '<p class="footer-note">This signed acknowledgment is maintained per Texas Administrative Code Chapter 746 requirements. Place a printed copy in the employee file.</p>';
+  html += '</div></div>';
+  return html;
+}
+
+// Render a fillable form record as it appeared on screen, with values filled in.
+function renderFillableVisual(parsed, r){
+  const isDirectDeposit = (parsed.title || "").toLowerCase().indexOf("direct deposit") !== -1;
+  const values = parsed.values || {};
+
+  let html = '<div class="printable"><div class="printable-card">';
+  html += '<img class="printable-logo" src="' + BHA_LOGO + '" alt="BHA" onerror="this.style.display=\'none\'" />';
+  html += '<h2>Benevolent House Academy</h2>';
+  html += '<div class="printable-tagline">Where Foundations Become Futures</div>';
+  html += '<div class="printable-contact">508 N State Hwy 342, Red Oak, TX 75154 | (469) 807-1221</div>';
+  html += '<div class="printable-title">' + escapeHtml(parsed.title || r.formType || "Form") + '</div>';
+  if (parsed.tacRef) html += '<div class="printable-subtitle">' + escapeHtml(parsed.tacRef) + '</div>';
+
+  if (parsed.intro) {
+    html += '<div class="form-intro">' + escapeHtml(parsed.intro) + '</div>';
+  }
+
+  // Render sections + filled values
+  (parsed.fields || []).forEach(function(section){
+    if (section.section) html += '<h3>' + escapeHtml(section.section) + '</h3>';
+    if (section.intro)   html += '<div class="section-intro">' + escapeHtml(section.intro) + '</div>';
+    (section.rows || []).forEach(function(row){
+      var cols = row.length || 1;
+      html += '<div class="form-row" style="grid-template-columns:repeat(' + cols + ',1fr)">';
+      row.forEach(function(field){
+        var val = values[field.name];
+        if (val == null || val === "") val = "";
+        var displayVal = val;
+        var isMasked = false;
+        if (isDirectDeposit && field.sensitive && val) {
+          displayVal = maskSensitive(val, field.name);
+          isMasked = true;
+        }
+        var classes = "form-value";
+        if (!val) classes += " empty";
+        if (isMasked) classes += " masked";
+        html += '<div class="form-field"><span class="form-label">' + escapeHtml(field.label) + '</span>';
+        html += '<span class="' + classes + '">' + (val ? escapeHtml(displayVal) : "(not provided)") + '</span></div>';
+      });
+      html += '</div>';
+    });
+  });
+
+  // Signature section
+  html += '<div class="signature-section">';
+  html += '<div class="form-row" style="grid-template-columns:1fr 1fr">';
+  html += '<div class="form-field"><span class="form-label">Submitted By</span><span class="form-value">' + escapeHtml(r.name || "--") + '</span></div>';
+  html += '<div class="form-field"><span class="form-label">Email</span><span class="form-value">' + escapeHtml(r.email || "--") + '</span></div>';
+  html += '<div class="form-field"><span class="form-label">Date Submitted</span><span class="form-value">' + escapeHtml(r.date || "--") + '</span></div>';
+  html += '<div class="form-field"><span class="form-label">Time Submitted</span><span class="form-value">' + escapeHtml(r.time || "--") + '</span></div>';
+  html += '</div>';
+
+  html += '<div style="margin-top:14px">';
+  html += '<span class="form-label">Employee Signature</span>';
+  if (r.signature && r.signature.length > 50) {
+    var sigSrc = r.signature.indexOf("data:image") === 0 ? r.signature : ("data:image/png;base64," + r.signature);
+    html += '<img class="signature-img" src="' + escapeHtml(sigSrc) + '" alt="Signature" />';
+  } else {
+    html += '<p style="color:#5a6f82;font-style:italic;margin-top:8px">No signature captured.</p>';
+  }
+  html += '</div>';
+
+  html += '</div>';
+
+  // For Office Use Only section (admin-only, blank for handwriting)
+  if (isDirectDeposit) {
+    html += '<div class="office-use">';
+    html += '<h4>FOR OFFICE USE ONLY</h4>';
+    html += '<div class="office-row">';
+    html += '<div class="form-field"><span class="form-label">Date Received</span><span class="form-value empty">&nbsp;</span></div>';
+    html += '<div class="form-field"><span class="form-label">Received By</span><span class="form-value empty">&nbsp;</span></div>';
+    html += '</div>';
+    html += '<div class="office-row">';
+    html += '<div class="form-field"><span class="form-label">Effective Pay Date</span><span class="form-value empty">&nbsp;</span></div>';
+    html += '<div class="form-field"><span class="form-label">Verification Attached</span><span class="form-value empty">&nbsp;Yes / No</span></div>';
+    html += '</div>';
+    html += '<div class="office-row">';
+    html += '<div class="form-field"><span class="form-label">Entered in Payroll</span><span class="form-value empty">&nbsp;Yes / No</span></div>';
+    html += '<div class="form-field"><span class="form-label">Filed in Employee Record</span><span class="form-value empty">&nbsp;Yes / No</span></div>';
+    html += '</div>';
+    html += '<p style="font-size:11px;color:#5a6f82;font-style:italic;margin-top:12px">Note: Account numbers above are masked for security. To view full numbers, log into Jotform directly.</p>';
+    html += '</div>';
+  } else {
+    // Director countersign line for non-direct-deposit forms
+    html += '<div class="director-line">';
+    html += '<p><strong>Director Signature:</strong> __________________________________________ &nbsp; <strong>Date:</strong> _____________</p>';
+    html += '</div>';
+  }
+
+  html += '<p class="footer-note">This form is maintained per Texas Administrative Code Chapter 746 requirements. Place a printed copy in the employee file.</p>';
+  html += '</div></div>';
+  return html;
+}
+
+// Fallback for old records without structured data
+function renderPlainText(text, r){
+  let html = '<div class="printable"><div class="printable-card">';
+  html += '<img class="printable-logo" src="' + BHA_LOGO + '" alt="BHA" onerror="this.style.display=\'none\'" />';
+  html += '<h2>Benevolent House Academy</h2>';
+  html += '<div class="printable-tagline">Where Foundations Become Futures</div>';
+  html += '<div class="printable-contact">508 N State Hwy 342, Red Oak, TX 75154 | (469) 807-1221</div>';
+  html += '<div class="printable-title">' + escapeHtml(r.formType || "Signed Form") + '</div>';
+  html += '<div class="form-row" style="grid-template-columns:1fr 1fr">';
+  html += '<div class="form-field"><span class="form-label">Employee</span><span class="form-value">' + escapeHtml(r.name || "--") + '</span></div>';
+  html += '<div class="form-field"><span class="form-label">Email</span><span class="form-value">' + escapeHtml(r.email || "--") + '</span></div>';
+  html += '<div class="form-field"><span class="form-label">Date</span><span class="form-value">' + escapeHtml(r.date || "--") + '</span></div>';
+  html += '<div class="form-field"><span class="form-label">Time</span><span class="form-value">' + escapeHtml(r.time || "--") + '</span></div>';
+  html += '</div>';
+  html += '<h3>Form Content</h3>';
+  html += '<p style="white-space:pre-wrap;font-size:12px">' + escapeHtml(text || "(no content)") + '</p>';
+  html += '<div class="signature-section"><span class="form-label">Employee Signature</span>';
+  if (r.signature && r.signature.length > 50) {
+    var sigSrc = r.signature.indexOf("data:image") === 0 ? r.signature : ("data:image/png;base64," + r.signature);
+    html += '<img class="signature-img" src="' + escapeHtml(sigSrc) + '" alt="Signature" />';
+  }
+  html += '</div>';
+  html += '</div></div>';
+  return html;
+}
+
+function openAgreementViewer(r) {
+  let body = "";
+  // Try to parse formData as structured JSON
+  if (r.formData && r.formData.trim()) {
+    var parsed = null;
+    try { parsed = JSON.parse(r.formData); } catch(e) { parsed = null; }
+    if (parsed && parsed.kind === "agreement") {
+      body = renderAgreementVisual(parsed, r);
+    } else if (parsed && parsed.kind === "fillable") {
+      body = renderFillableVisual(parsed, r);
+    } else {
+      body = renderPlainText(r.formData, r);
+    }
+  } else {
+    body = renderPlainText("", r);
+  }
+
+  let html = '<div class="viewer-overlay"><div class="viewer-box">';
+  html += '<div class="viewer-hdr no-print"><h3>Signed Form: ' + escapeHtml(r.name) + ' - ' + escapeHtml(r.formType||r.formTitle||"--") + '</h3><button class="viewer-close" onclick="closeViewer()">&times;</button></div>';
+  html += '<div class="viewer-body">' + body + '</div>';
+  html += '<div class="viewer-actions no-print">';
+  html += '<button class="btn" onclick="window.print()">Print Record</button>';
+  html += '<button class="btn btn-sec" onclick="closeViewer()">Close</button>';
+  html += '</div>';
+  html += '</div></div>';
+  $("viewer").innerHTML = html;
+  $("viewer").style.display = "block";
+}
+
+function closeViewer(){
   $("viewer").style.display = "none";
   $("viewer").innerHTML = "";
 }
 
-// Wire up controls
-$("search").addEventListener("input", applyFilter);
-$("refresh").addEventListener("click", loadRecords);
+function switchTab(tabName){
+  document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active")});
+  document.querySelectorAll(".tab-content").forEach(function(c){c.classList.remove("active")});
+  $("tab-" + tabName).classList.add("active");
+  $("tab-" + tabName + "-content").classList.add("active");
+  if (tabName === "agreements" && allAgreements.length === 0) {
+    loadAgreements();
+  }
+}
 
-// Initial load
-loadRecords();
+document.querySelectorAll(".tab").forEach(function(t){
+  t.addEventListener("click", function(){ switchTab(t.getAttribute("data-tab")); });
+});
+
+$("csearch").addEventListener("input", applyCompletionsFilter);
+$("crefresh").addEventListener("click", loadCompletions);
+$("asearch").addEventListener("input", applyAgreementsFilter);
+$("arefresh").addEventListener("click", loadAgreements);
+$("logout-btn").addEventListener("click", logout);
 </script>
 </body>
 </html>
