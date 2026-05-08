@@ -1858,7 +1858,7 @@ function AgreementFormView({form, onBack}) {
     var dateForEmail = dateSigned || new Date().toLocaleDateString();
     return React.createElement("div", {className: "form-wrap"},
       React.createElement("div", {className: "sv-breadcrumb no-print", onClick: onBack}, "\u2190 Back to Documents"),
-      React.createElement("div", {className: "form-success"},
+      React.createElement("div", {className: "form-success no-print"},
         React.createElement("h3", null, "\u2705 Form Signed Successfully"),
         React.createElement("p", null, name + " signed the " + form.title + " on " + dateForEmail + "."),
         React.createElement("div", {style: {marginTop: 20, maxWidth: 500, margin: "20px auto", textAlign: "left"}},
@@ -1876,6 +1876,46 @@ function AgreementFormView({form, onBack}) {
           React.createElement("p", {style: {fontSize: 12, color: "#C62828", marginTop: 8, textAlign: "center", fontWeight: 700}}, "\u26a0\ufe0f Tip: Print or save your form before leaving this screen so you have your own personal copy.")
         ),
         React.createElement("button", {className: "sv-nav-btn", onClick: onBack, style: {marginTop: 16, background: "#5a6f82"}}, "Back to Documents")
+      ),
+      // Print-only block - hidden on screen, appears when user clicks Print.
+      // Renders the actual signed form including the policy text, signature
+      // image, and metadata so the printout is a complete record.
+      React.createElement("div", {className: "print-only"},
+        React.createElement("div", {className: "form-card", style: {boxShadow: "none", border: "none"}},
+          React.createElement("img", {src: LOGO, style: {height: 48, margin: "0 auto 8px", display: "block"}}),
+          React.createElement("h2", null, "Benevolent House Academy"),
+          React.createElement("p", {style: {textAlign: "center", fontSize: 12, color: "#5a6f82", marginBottom: 4}}, "508 N State Hwy 342, Red Oak, TX 75154 | (469) 807-1221"),
+          React.createElement("p", {style: {textAlign: "center", fontSize: 11, color: "#C5960C", marginBottom: 16}}, form.tacRef),
+          React.createElement("hr", {className: "form-divider"}),
+          form.sections.map(function(sec, i) {
+            var els = [];
+            if (sec.heading) els.push(React.createElement("h3", {key: "h"+i}, sec.heading));
+            if (sec.subheading) els.push(React.createElement("h3", {key: "sh"+i, style: {fontSize: 14, color: "#C5960C"}}, sec.subheading));
+            if (sec.intro) els.push(React.createElement("p", {key: "p"+i}, sec.intro));
+            if (sec.items) els.push(React.createElement("ol", {key: "ol"+i}, sec.items.map(function(item, j) {
+              return React.createElement("li", {key: j}, item);
+            })));
+            return React.createElement("div", {key: i}, els);
+          }),
+          React.createElement("hr", {className: "form-divider"}),
+          React.createElement("p", {style: {fontWeight: 700, color: "#052F59", marginBottom: 8}}, "Employee Acknowledgment"),
+          React.createElement("p", {style: {fontSize: 13, marginBottom: 14}}, "By signing below, I confirm that I have read, understand, and agree to comply with the above policy. I understand that failure to comply may result in corrective action, up to and including termination."),
+          React.createElement("div", {style: {display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16}},
+            React.createElement("div", null,
+              React.createElement("p", {style: {fontSize: 11, color: "#5a6f82", fontWeight: 700, textTransform: "uppercase", marginBottom: 4}}, "Employee Name"),
+              React.createElement("p", {style: {fontSize: 14, borderBottom: "1px solid #999", paddingBottom: 4}}, name)
+            ),
+            React.createElement("div", null,
+              React.createElement("p", {style: {fontSize: 11, color: "#5a6f82", fontWeight: 700, textTransform: "uppercase", marginBottom: 4}}, "Date Signed"),
+              React.createElement("p", {style: {fontSize: 14, borderBottom: "1px solid #999", paddingBottom: 4}}, dateForEmail)
+            )
+          ),
+          React.createElement("p", {style: {fontSize: 11, color: "#5a6f82", fontWeight: 700, textTransform: "uppercase", marginBottom: 4}}, "Employee Signature"),
+          sigData
+            ? React.createElement("img", {src: sigData, style: {maxWidth: 300, maxHeight: 100, border: "1px solid #ddd", padding: 4, display: "block"}})
+            : React.createElement("p", {style: {fontStyle: "italic", color: "#5a6f82"}}, "(no signature on file)"),
+          React.createElement("p", {style: {fontSize: 11, color: "#5a6f82", marginTop: 18, fontStyle: "italic"}}, "This signed acknowledgment was submitted electronically through the BHA Staff Training Portal on " + dateForEmail + ". A digital record is on file with BHA leadership. This printout is for the employee's personal records.")
+        )
       )
     );
   }
@@ -1962,11 +2002,12 @@ function FillableFormView({form, onBack}) {
   }
 
   if (submitted) {
+    var subDateStr = new Date().toLocaleDateString();
     return React.createElement("div", {className: "form-wrap"},
       React.createElement("div", {className: "sv-breadcrumb no-print", onClick: onBack}, "\u2190 Back to Documents"),
-      React.createElement("div", {className: "form-success"},
+      React.createElement("div", {className: "form-success no-print"},
         React.createElement("h3", null, "\u2705 Form Submitted Successfully"),
-        React.createElement("p", null, form.title + " submitted on " + new Date().toLocaleDateString() + "."),
+        React.createElement("p", null, form.title + " submitted on " + subDateStr + "."),
         React.createElement("div", {style: {marginTop: 20, maxWidth: 500, margin: "20px auto", textAlign: "left"}},
           React.createElement("p", {style: {fontWeight: 700, color: "#052F59", marginBottom: 12, textAlign: "center"}}, "Save your completed form for your records:"),
           React.createElement("div", {style: {display: "flex", flexDirection: "column", gap: 10}},
@@ -1974,7 +2015,7 @@ function FillableFormView({form, onBack}) {
             React.createElement("button", {className: "sv-nav-btn", onClick: function(){window.print()}, style: {width: "100%", justifyContent: "center", background: "#1565C0"}}, "\ud83d\udcbe Option 2: Save as PDF (choose \"Save as PDF\" in print window)"),
             React.createElement("button", {className: "sv-nav-btn", onClick: function(){
               var subj = encodeURIComponent("Submitted Form: " + form.title);
-              var body = encodeURIComponent("Form Submission Confirmation\n\nEmployee: " + name + "\nForm: " + form.title + "\nDate Submitted: " + new Date().toLocaleDateString() + "\nEmail: " + getEmail() + "\n\nThis form has been completed and submitted through the BHA training portal. A copy is on file with leadership. Thank you.");
+              var body = encodeURIComponent("Form Submission Confirmation\n\nEmployee: " + name + "\nForm: " + form.title + "\nDate Submitted: " + subDateStr + "\nEmail: " + getEmail() + "\n\nThis form has been completed and submitted through the BHA training portal. A copy is on file with leadership. Thank you.");
               window.location.href = "mailto:info@benevolenthouseacademy.org?subject=" + subj + "&body=" + body;
             }, style: {width: "100%", justifyContent: "center", background: "#356933"}}, "\u2709\ufe0f Option 3: Send Confirmation to BHA (opens your email app)")
           ),
@@ -1982,6 +2023,54 @@ function FillableFormView({form, onBack}) {
           React.createElement("p", {style: {fontSize: 12, color: "#C62828", marginTop: 8, textAlign: "center", fontWeight: 700}}, "\u26a0\ufe0f Tip: Print or save your form before leaving this screen so you have your own personal copy.")
         ),
         React.createElement("button", {className: "sv-nav-btn", onClick: onBack, style: {marginTop: 16, background: "#5a6f82"}}, "Back to Documents")
+      ),
+      // Print-only block - hidden on screen, shown when printing. Renders the
+      // completed form with the values entered and signature image so the
+      // printout is a complete record of what was submitted.
+      React.createElement("div", {className: "print-only"},
+        React.createElement("div", {className: "form-card", style: {boxShadow: "none", border: "none"}},
+          React.createElement("img", {src: LOGO, style: {height: 48, margin: "0 auto 8px", display: "block"}}),
+          React.createElement("h2", null, "Benevolent House Academy"),
+          React.createElement("p", {style: {textAlign: "center", fontSize: 12, color: "#5a6f82", marginBottom: 4}}, "508 N State Hwy 342, Red Oak, TX 75154 | (469) 807-1221"),
+          React.createElement("p", {style: {textAlign: "center", fontSize: 11, color: "#C5960C", marginBottom: 16, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1}}, form.title),
+          form.intro && React.createElement("div", {style: {background: "#FFF8E1", borderLeft: "4px solid #C5960C", padding: "10px 12px", borderRadius: 6, fontSize: 12, color: "#4A3A00", marginBottom: 16, lineHeight: 1.5}}, form.intro),
+          React.createElement("hr", {className: "form-divider"}),
+          form.fields.map(function(section, si) {
+            return React.createElement("div", {key: si, style: {marginBottom: 16}},
+              React.createElement("h3", {style: {color: "#052F59", fontSize: 14, fontWeight: 700, marginBottom: 8, borderLeft: "4px solid #C5960C", paddingLeft: 8}}, section.section),
+              section.intro && React.createElement("p", {style: {fontSize: 11, color: "#5a6f82", fontStyle: "italic", marginBottom: 10, lineHeight: 1.5}}, section.intro),
+              section.rows.map(function(row, ri) {
+                return React.createElement("div", {key: ri, style: {display: "grid", gridTemplateColumns: "repeat(" + row.length + ", 1fr)", gap: 12, marginBottom: 8}},
+                  row.map(function(field, fi) {
+                    var v = values[field.name];
+                    if (v == null || v === "") v = "";
+                    return React.createElement("div", {key: fi},
+                      React.createElement("p", {style: {fontSize: 10, color: "#5a6f82", fontWeight: 700, textTransform: "uppercase", marginBottom: 2}}, field.label),
+                      React.createElement("p", {style: {fontSize: 13, borderBottom: "1px solid #999", paddingBottom: 3, minHeight: 18, color: v ? "#0D2B4E" : "#999", fontStyle: v ? "normal" : "italic"}}, v || "(not provided)")
+                    );
+                  })
+                );
+              })
+            );
+          }),
+          React.createElement("hr", {className: "form-divider"}),
+          React.createElement("p", {style: {fontSize: 13, marginBottom: 14}}, "I certify that the information provided above is true and complete to the best of my knowledge."),
+          React.createElement("div", {style: {display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 14}},
+            React.createElement("div", null,
+              React.createElement("p", {style: {fontSize: 11, color: "#5a6f82", fontWeight: 700, textTransform: "uppercase", marginBottom: 4}}, "Employee Name"),
+              React.createElement("p", {style: {fontSize: 14, borderBottom: "1px solid #999", paddingBottom: 4}}, name)
+            ),
+            React.createElement("div", null,
+              React.createElement("p", {style: {fontSize: 11, color: "#5a6f82", fontWeight: 700, textTransform: "uppercase", marginBottom: 4}}, "Date Submitted"),
+              React.createElement("p", {style: {fontSize: 14, borderBottom: "1px solid #999", paddingBottom: 4}}, subDateStr)
+            )
+          ),
+          React.createElement("p", {style: {fontSize: 11, color: "#5a6f82", fontWeight: 700, textTransform: "uppercase", marginBottom: 4}}, "Employee Signature"),
+          sigData
+            ? React.createElement("img", {src: sigData, style: {maxWidth: 300, maxHeight: 100, border: "1px solid #ddd", padding: 4, display: "block"}})
+            : React.createElement("p", {style: {fontStyle: "italic", color: "#5a6f82"}}, "(no signature on file)"),
+          React.createElement("p", {style: {fontSize: 11, color: "#5a6f82", marginTop: 18, fontStyle: "italic"}}, "This form was submitted electronically through the BHA Staff Training Portal on " + subDateStr + ". A digital record is on file with BHA leadership. This printout is for the employee's personal records.")
+        )
       )
     );
   }
