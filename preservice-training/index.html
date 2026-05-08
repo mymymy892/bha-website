@@ -381,6 +381,102 @@ function logCompletionToJotform(payload){
   } catch(e) { /* ignore */ }
 }
 
+// ======== Jotform configuration (auto-logging signed agreement forms) ========
+// Form ID 261268412415049 collects every signed agreement form. Each submission
+// includes the form type, the signature image, and the captured form data.
+const JOTFORM_AGREEMENTS_ID = "261268412415049";
+const JOTFORM_AGREEMENTS_URL = "https://submit.jotform.com/submit/" + JOTFORM_AGREEMENTS_ID;
+function logAgreementToJotform(payload){
+  // Fire-and-forget. Never block the UI on this.
+  try {
+    var fd = new FormData();
+    fd.append("formID", JOTFORM_AGREEMENTS_ID);
+    if(payload.name)          fd.append("employeeName", payload.name);
+    if(payload.email)         fd.append("emailAddress", payload.email);
+    if(payload.formType)      fd.append("formType", payload.formType);
+    if(payload.formTitle)     fd.append("formTitle", payload.formTitle);
+    if(payload.date)          fd.append("submissionDate", payload.date);
+    if(payload.time)          fd.append("submissionTime", payload.time);
+    if(payload.signatureImage)fd.append("signatureImage", payload.signatureImage);
+    if(payload.formData)      fd.append("formData", payload.formData);
+    fetch(JOTFORM_AGREEMENTS_URL, {
+      method: "POST",
+      body: fd,
+      mode: "no-cors"
+    }).catch(function(){/* ignore network errors */});
+  } catch(e) { /* ignore */ }
+}
+
+// ======== Form content helpers ========
+// Build a structured payload describing the form content so admin.html can
+// re-render it with full visual formatting (logo, headings, bullets, etc.)
+// matching what the staff member saw on screen.
+
+// For agreement forms (the read-and-sign type), serialize the sections array
+// directly. Admin reads this and reconstructs the on-screen layout.
+function buildAgreementPayload(form){
+  return JSON.stringify({
+    kind: "agreement",
+    title: form.title,
+    icon: form.icon || "",
+    tacRef: form.tacRef || "",
+    sections: form.sections || []
+  });
+}
+
+// For fillable forms, serialize the field structure plus the user's values
+// so admin can re-render the form layout with values filled in.
+function buildFillablePayload(form, values){
+  return JSON.stringify({
+    kind: "fillable",
+    title: form.title,
+    icon: form.icon || "",
+    tacRef: form.tacRef || "",
+    fields: form.fields || [],
+    values: values || {}
+  });
+}
+
+// Legacy plain-text flatteners kept for backward compatibility with older
+// records in Jotform that did not capture structured payloads.
+function flattenAgreementSections(sections){
+  if(!sections||!sections.length)return "";
+  var out = [];
+  sections.forEach(function(s){
+    if(s.heading)    out.push(s.heading.toUpperCase());
+    if(s.subheading) out.push(s.subheading);
+    if(s.intro)      out.push(s.intro);
+    if(s.items&&s.items.length){
+      s.items.forEach(function(it){ out.push("- " + it); });
+    }
+    out.push("");
+  });
+  return out.join("\n").replace(/\n{3,}/g,"\n\n").trim();
+}
+
+function formatFilledForm(fields, values){
+  if(!fields||!fields.length)return "";
+  var out = [];
+  fields.forEach(function(section){
+    if(section.section){
+      out.push("");
+      out.push("=== " + section.section.toUpperCase() + " ===");
+    }
+    if(section.rows){
+      section.rows.forEach(function(row){
+        row.forEach(function(field){
+          if(field.label && field.name){
+            var v = values && values[field.name];
+            if(v==null||v==="") v = "(not provided)";
+            out.push(field.label + ": " + v);
+          }
+        });
+      });
+    }
+  });
+  return out.join("\n").replace(/\n{3,}/g,"\n\n").trim();
+}
+
 // ======== Text Parser ========
 // Helper: split a multi-paragraph text block into structured sub-parts
 // (paragraphs, ordered lists, unordered lists). Used for scenario contents.
@@ -1367,6 +1463,40 @@ const FILLABLE_FORMS = [
         [{label: "Age groups this person will care for", name: "bgAges", type: "text", defaultVal: "0-17 months, 18 months-2 years, 3-4 years, 5-13 years", full: true}]
       ]}
     ]
+  },
+  {
+    id: "direct_deposit",
+    title: "Direct Deposit Authorization",
+    icon: "\ud83d\udcb3",
+    desc: "Employee Payroll Enrollment Form. Authorize direct deposit of your earnings to your bank account or split between two accounts.",
+    tag: "Sensitive Form",
+    tagClass: "sign",
+    intro: "Complete all sections below to enroll in or update your direct deposit. Mark the appropriate selections. Allow up to two pay cycles for direct deposit to take effect. After you submit, attach proof of your routing and account numbers to BHA leadership using one of the methods listed in section 5.",
+    fields: [
+      {section: "1. Employee Information", rows: [
+        [{label: "Full Legal Name", name: "ddFullName", type: "text", full: true}],
+        [{label: "Home Address", name: "ddAddress", type: "text", full: true}],
+        [{label: "Phone", name: "ddPhone", type: "tel"}, {label: "Email", name: "ddEmail", type: "email"}],
+        [{label: "Position / Title", name: "ddPosition", type: "text"}, {label: "Last 4 of SSN", name: "ddSSN4", type: "text", sensitive: true, placeholder: "1234"}],
+        [{label: "Hire Date", name: "ddHireDate", type: "date"}, {label: "Today's Date", name: "ddTodayDate", type: "date"}]
+      ]},
+      {section: "2. Request Type", rows: [
+        [{label: "Request Type", name: "ddRequestType", type: "select", options: ["New Enrollment", "Change Account Information", "Cancel Direct Deposit"]}]
+      ]},
+      {section: "3. Primary Account", rows: [
+        [{label: "Bank / Financial Institution", name: "ddPrimaryBank", type: "text", full: true}],
+        [{label: "Routing Number", name: "ddPrimaryRouting", type: "text", sensitive: true, placeholder: "9 digits"}, {label: "Bank Phone", name: "ddPrimaryBankPhone", type: "tel"}],
+        [{label: "Account Number", name: "ddPrimaryAccount", type: "text", sensitive: true}, {label: "Account Type", name: "ddPrimaryAcctType", type: "select", options: ["Checking", "Savings"]}],
+        [{label: "Deposit Amount", name: "ddPrimaryDepositType", type: "select", options: ["Full Net Pay", "Specific Amount"]}, {label: "If Specific Amount, enter dollar amount", name: "ddPrimaryDepositSpecific", type: "text", placeholder: "$0.00"}]
+      ]},
+      {section: "4. Secondary Account (optional)", intro: "Complete this section only if you wish to split your deposit between two accounts. The remaining balance after the primary account allocation will be deposited here.", rows: [
+        [{label: "Bank / Financial Institution", name: "ddSecondaryBank", type: "text", full: true}],
+        [{label: "Routing Number", name: "ddSecondaryRouting", type: "text", sensitive: true, placeholder: "9 digits"}, {label: "Bank Phone", name: "ddSecondaryBankPhone", type: "tel"}],
+        [{label: "Account Number", name: "ddSecondaryAccount", type: "text", sensitive: true}, {label: "Account Type", name: "ddSecondaryAcctType", type: "select", options: ["", "Checking", "Savings"]}],
+        [{label: "Deposit Amount", name: "ddSecondaryDepositType", type: "select", options: ["", "Full Net Pay", "Specific Amount"]}, {label: "If Specific Amount, enter dollar amount", name: "ddSecondaryDepositSpecific", type: "text", placeholder: "$0.00"}]
+      ]},
+      {section: "5. Authorization", intro: "I hereby authorize Benevolent House Academy to deposit my earnings directly into the account or accounts identified above through the Automated Clearing House (ACH) network. I authorize Benevolent House Academy and its designated payroll processor to credit my account each pay period and, if necessary, to debit my account to correct any erroneous deposit. This authorization remains in effect until I provide written notice of cancellation or change with sufficient time for Benevolent House Academy to act upon it. I confirm that the account information provided above is accurate and that I am the owner or authorized signer on the account.\n\nRequired Attachment: After submitting this form, provide one of the following to BHA leadership to verify your routing and account numbers: a voided check, a direct deposit form generated from your online banking profile, an account verification letter from your bank, or a screenshot from your bank's mobile app or website that clearly shows your name, routing number, and account number. Deposit slips and starter checks are not accepted.", rows: []}
+    ]
   }];
 
 const DOWNLOAD_DOCS = [
@@ -1455,11 +1585,24 @@ function AgreementFormView({form, onBack}) {
 
   function handleSubmit() {
     setSubmitted(true);
-    // Save to localStorage
+    var now = new Date();
+    var dateStr = dateSigned || now.toLocaleDateString();
     const store = loadStore();
     store.forms = store.forms || {};
-    store.forms[form.id] = {signed: true, date: dateSigned || new Date().toLocaleDateString(), name: name};
+    store.forms[form.id] = {signed: true, date: dateStr, name: name};
     saveStore(store);
+    // Send structured payload so admin can re-render with full visual format.
+    var structuredData = buildAgreementPayload(form);
+    logAgreementToJotform({
+      name: name,
+      email: getEmail(),
+      formType: form.title || form.id,
+      formTitle: form.title || form.id,
+      date: dateStr,
+      time: now.toLocaleTimeString(),
+      signatureImage: sigData || "",
+      formData: structuredData
+    });
   }
 
   if (submitted) {
@@ -1507,7 +1650,8 @@ function AgreementFormView({form, onBack}) {
         )
       ),
       React.createElement(SignaturePad, {onSign: function(d){setSigData(d); setSigned(true)}, onClear: function(){setSigData(null); setSigned(false)}}),
-      React.createElement("div", {style: {textAlign: "center", marginTop: 16}},
+      React.createElement("div", {style: {textAlign: "center", marginTop: 16, display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap"}},
+        React.createElement("button", {className: "sig-btn", style: {background:"#5a6f82", color:"#fff"}, onClick: function(){window.print()}}, "\ud83d\udda8\ufe0f Print This Form"),
         React.createElement("button", {className: "sig-btn submit", disabled: !signed, onClick: handleSubmit}, signed ? "Submit Signed Form" : "Please sign above to submit")
       )
     )
@@ -1528,10 +1672,25 @@ function FillableFormView({form, onBack}) {
 
   function handleSubmit() {
     setSubmitted(true);
+    var now = new Date();
+    var dateStr = now.toLocaleDateString();
     var store = loadStore();
     store.forms = store.forms || {};
-    store.forms[form.id] = {signed: true, date: new Date().toLocaleDateString(), name: name, data: values};
+    store.forms[form.id] = {signed: true, date: dateStr, name: name, data: values};
     saveStore(store);
+    // Send structured payload so admin can re-render the full form layout
+    // with values filled in, matching what the employee saw on screen.
+    var structuredData = buildFillablePayload(form, values);
+    logAgreementToJotform({
+      name: name,
+      email: getEmail(),
+      formType: form.title || form.id,
+      formTitle: form.title || form.id,
+      date: dateStr,
+      time: now.toLocaleTimeString(),
+      signatureImage: sigData || "",
+      formData: structuredData
+    });
   }
 
   if (submitted) {
@@ -1553,9 +1712,11 @@ function FillableFormView({form, onBack}) {
       React.createElement("img", {src: LOGO, style: {height: 48, margin: "0 auto 8px", display: "block"}}),
       React.createElement("h2", null, "Benevolent House Academy"),
       React.createElement("p", {style: {textAlign: "center", fontSize: 12, color: "#5a6f82", marginBottom: 16}}, form.title),
+      form.intro && React.createElement("div", {style: {background: "#FFF8E1", borderLeft: "4px solid #C5960C", padding: "12px 14px", borderRadius: 6, fontSize: 13, color: "#4A3A00", marginBottom: 18, lineHeight: 1.5}}, form.intro),
       form.fields.map(function(section, si) {
         return React.createElement("div", {key: si},
           React.createElement("h3", null, section.section),
+          section.intro && React.createElement("p", {style: {fontSize: 12, color: "#5a6f82", fontStyle: "italic", marginBottom: 12, lineHeight: 1.5, whiteSpace: "pre-wrap"}}, section.intro),
           section.rows.map(function(row, ri) {
             var isFull = row.length === 1 && (row[0].full || row[0].type === "textarea");
             return React.createElement("div", {key: ri, className: isFull ? "" : "form-row", style: isFull ? {} : {gridTemplateColumns: "repeat(" + row.length + ", 1fr)"}},
@@ -1577,7 +1738,7 @@ function FillableFormView({form, onBack}) {
                 }
                 return React.createElement("div", {key: fi},
                   React.createElement("label", {className: "form-label"}, field.label),
-                  React.createElement("input", {className: "form-input", type: field.type || "text", value: values[field.name] !== undefined ? values[field.name] : (field.defaultVal || ""), onChange: function(e){handleChange(field.name, e.target.value)}})
+                  React.createElement("input", {className: "form-input", type: field.type || "text", placeholder: field.placeholder || "", value: values[field.name] !== undefined ? values[field.name] : (field.defaultVal || ""), onChange: function(e){handleChange(field.name, e.target.value)}})
                 );
               })
             );
@@ -1587,7 +1748,8 @@ function FillableFormView({form, onBack}) {
       React.createElement("hr", {className: "form-divider"}),
       React.createElement("p", {style: {fontSize: 13, fontWeight: 600}}, "I certify that the information provided above is true and complete to the best of my knowledge."),
       React.createElement(SignaturePad, {onSign: function(d){setSigData(d); setSigned(true)}, onClear: function(){setSigData(null); setSigned(false)}}),
-      React.createElement("div", {style: {textAlign: "center", marginTop: 16}},
+      React.createElement("div", {style: {textAlign: "center", marginTop: 16, display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap"}},
+        React.createElement("button", {className: "sig-btn", style: {background:"#5a6f82", color:"#fff"}, onClick: function(){window.print()}}, "\ud83d\udda8\ufe0f Print This Form"),
         React.createElement("button", {className: "sig-btn submit", disabled: !signed, onClick: handleSubmit}, signed ? "Submit Form" : "Please sign above to submit")
       )
     )
