@@ -140,7 +140,10 @@ nav.scrolled{box-shadow:var(--shadow-sm)}
 .form-group textarea{resize:vertical;min-height:90px}
 .checkbox-group{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
 .checkbox-item{display:flex;align-items:center;gap:10px;background:var(--warm-white);border:1.5px solid var(--border-input);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all 0.2s;font-size:13.5px;font-weight:500;color:var(--text-body);user-select:none;min-height:44px;line-height:1}
-.checkbox-item span{display:inline-flex;align-items:center;line-height:1}
+.checkbox-item span{display:block;line-height:1.4}
+.form-group label.checkbox-item{display:flex!important;flex-direction:row;align-items:flex-start;gap:10px;margin:0}
+.checkbox-item input[type="checkbox"]{margin-top:1px!important}
+.checkbox-item small{display:block;font-size:12px;font-weight:600;color:var(--gold);margin-top:3px;letter-spacing:.2px}
 .checkbox-item input[type="checkbox"]{width:20px;height:20px;min-width:20px;min-height:20px;accent-color:var(--navy);cursor:pointer;flex-shrink:0;-webkit-appearance:checkbox;appearance:checkbox;margin:0 6px 0 0;vertical-align:middle;position:relative;top:0}
 .child-block{background:var(--cream);border-radius:var(--r-md);padding:20px;border:1px solid var(--border-light);margin-bottom:14px}
 .child-block h4{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:8px}
@@ -495,10 +498,10 @@ body{padding-top:38px}
       <div class="form-group">
         <label>Which type of care do you need? (select all that apply)</label>
         <div class="checkbox-group">
-          <label class="checkbox-item"><input type="checkbox" name="care_type" value="Full-Time Weekday Care (Mon-Fri, 6am-6pm)"><span>Full-Time Weekday Care (Mon to Fri, 6 AM to 6 PM)</span></label>
-          <label class="checkbox-item"><input type="checkbox" name="care_type" value="INTEREST LIST: Weekend Daytime Care (ages 2-13)"><span>Weekend Daytime Care, ages 2 to 13 (coming soon, join the interest list)</span></label>
-          <label class="checkbox-item"><input type="checkbox" name="care_type" value="INTEREST LIST: Evening Care (ages 2+)"><span>Evening Care, ages 2 and up (coming soon, join the interest list)</span></label>
-          <label class="checkbox-item"><input type="checkbox" name="care_type" value="INTEREST LIST: School-Age Summer Care"><span>School-Age Summer Care (coming soon, join the interest list)</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="care_type" value="Full-Time Weekday Care (Mon-Fri, 6am-6pm)"><span>Full-Time Weekday Care<small>Monday to Friday, 6 AM to 6 PM</small></span></label>
+          <label class="checkbox-item"><input type="checkbox" name="care_type" value="INTEREST LIST: Weekend Daytime Care (ages 2-13)"><span>Weekend Daytime Care, ages 2 to 13<small>Coming soon &bull; join the interest list</small></span></label>
+          <label class="checkbox-item"><input type="checkbox" name="care_type" value="INTEREST LIST: Evening Care (ages 2+)"><span>Evening Care, ages 2 and up<small>Coming soon &bull; join the interest list</small></span></label>
+          <label class="checkbox-item"><input type="checkbox" name="care_type" value="INTEREST LIST: School-Age Summer Care"><span>School-Age Summer Care<small>Coming soon &bull; join the interest list</small></span></label>
         </div>
       </div>
       <div class="form-row">
