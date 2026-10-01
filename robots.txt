@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /preservice-training/
+
+Sitemap: https://benevolenthouseacademy.org/sitemap.xml
