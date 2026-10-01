@@ -192,6 +192,14 @@ body{padding-top:38px}
 .checkbox-row{display:flex;flex-wrap:wrap;gap:10px}
 .checkbox-row label{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:var(--text-body);background:var(--cream);border:1px solid var(--border-light);padding:8px 12px;border-radius:8px;cursor:pointer}
 @media(max-width:860px){.two-col{grid-template-columns:1fr;gap:32px}.day-item{grid-template-columns:1fr;gap:4px}}
+.glance-wrap{max-width:860px;margin:0 auto}
+.glance-table{width:100%;border-collapse:separate;border-spacing:0;background:white;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)}
+.glance-table th{background:var(--navy);color:white;text-align:left;font-size:13.5px;font-weight:700;padding:13px 18px;width:30%;vertical-align:top;border-bottom:1px solid rgba(255,255,255,.12)}
+.glance-table td{font-size:14.5px;color:var(--text-body);padding:13px 18px;line-height:1.55;border-bottom:1px solid var(--border-light)}
+.glance-table tr:nth-child(odd) td{background:#FBF8F2}
+.glance-table tr:last-child th,.glance-table tr:last-child td{border-bottom:none}
+.glance-table a{color:var(--navy);font-weight:700}
+@media(max-width:600px){.glance-table th,.glance-table td{display:block;width:100%}.glance-table th{padding:10px 16px 6px}.glance-table td{padding:8px 16px 14px}}
 </style>
 </head>
 <body>
@@ -325,6 +333,35 @@ body{padding-top:38px}
 </div>
 
 </div>
+</div>
+</section>
+
+<!-- DE UN VISTAZO -->
+<section style="padding:60px 0 70px;background:var(--cream,#FBF8F2)" id="de-un-vistazo">
+<div class="container">
+  <div style="text-align:center;margin-bottom:28px">
+    <h2 style="font-family:'DM Serif Display',serif;font-size:34px;color:var(--navy);font-weight:400">BHA de un vistazo</h2>
+    <p style="color:var(--text-soft);margin-top:8px">Los detalles m&aacute;s importantes del d&iacute;a de su hijo(a), todo en un solo lugar.</p>
+  </div>
+  <div class="glance-wrap">
+    <table class="glance-table">
+      <tr><th>Horario</th><td>Lunes a viernes, 6:00 a.m. a 6:00 p.m.</td></tr>
+      <tr><th>Edades</th><td>De 6 semanas a 5 a&ntilde;os. Con licencia hasta los 13 a&ntilde;os; pr&oacute;ximamente cuidado de fin de semana, en horario vespertino y de verano para ni&ntilde;os en edad escolar.</td></tr>
+      <tr><th>Llegada</th><td>Todos los ni&ntilde;os llegan antes de las 9:00 a.m.</td></tr>
+      <tr><th>Recogida</th><td>Antes de las 6:00 p.m. Se cobra $1 por minuto despu&eacute;s de las 6:00 p.m.</td></tr>
+      <tr><th>Seguridad en la recogida</th><td>Solo adultos autorizados. Pedimos identificaci&oacute;n con foto a toda persona que nuestro equipo a&uacute;n no conoce.</td></tr>
+      <tr><th>Colegiatura</th><td>Se paga cada viernes por la semana siguiente, con pago autom&aacute;tico por Brightwheel</td></tr>
+      <tr><th>Comunicaci&oacute;n</th><td>La aplicaci&oacute;n Brightwheel para reportes diarios, fotos, mensajes y avisos</td></tr>
+      <tr><th>Clima</th><td>Seguimos los cierres y aperturas retrasadas de Red Oak ISD, anunciados en Brightwheel</td></tr>
+      <tr><th>Cierres</th><td>15 d&iacute;as al a&ntilde;o, m&aacute;s cierres temprano el mi&eacute;rcoles antes de Acci&oacute;n de Gracias y en Halloween</td></tr>
+      <tr><th>Cu&aacute;ndo quedarse en casa</th><td>Fiebre de 100.4&deg;F o m&aacute;s, v&oacute;mito o diarrea. Puede regresar despu&eacute;s de 24 horas sin s&iacute;ntomas y sin medicamento.</td></tr>
+      <tr><th>Comidas</th><td>Desayuno, almuerzo y merienda incluidos. BHA es una instalaci&oacute;n libre de huevo y nueces.</td></tr>
+      <tr><th>Incluido en la colegiatura</th><td>Pa&ntilde;ales, toallitas, pull-ups y f&oacute;rmula Similac 360 Total Care hasta los 12 meses</td></tr>
+      <tr><th>Cada viernes</th><td>Su hijo(a) lleva a casa un portafolio con el trabajo de la semana</td></tr>
+      <tr><th>Contacto</th><td><a href="tel:4698071221">(469) 807-1221</a> &nbsp;|&nbsp; <a href="mailto:info@benevolenthouseacademy.org">info@benevolenthouseacademy.org</a></td></tr>
+      <tr><th>Licencia</th><td>Regulaci&oacute;n de Cuidado Infantil de HHSC de Texas, Operaci&oacute;n #1832672</td></tr>
+    </table>
+  </div>
 </div>
 </section>
 
