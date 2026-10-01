@@ -695,11 +695,11 @@ Proudly serving <strong>Red Oak, Midlothian, Waxahachie, Cedar Hill, Ovilla, Gle
 <p style="font-size:16px;color:var(--text-soft);line-height:1.7;max-width:520px;margin:0 auto">Real moments from real days at Benevolent House Academy.</p>
 </div>
 <div class="life-grid">
-<figure class="life-tile reveal"><img src="images/life-little-chef.jpg" alt="A toddler stirring a mixing bowl during a hands-on measuring activity" loading="lazy"><figcaption>Little chefs, big learning</figcaption></figure>
-<figure class="life-tile reveal"><img src="images/life-story-time.jpg" alt="A preschooler reading a farm board book on a wooden bench" loading="lazy"><figcaption>A quiet moment with a favorite book</figcaption></figure>
-<figure class="life-tile reveal"><img src="images/life-outdoor-play.jpg" alt="A smiling child at the top of the playground slide" loading="lazy"><figcaption>Outdoor play every day</figcaption></figure>
-<figure class="life-tile reveal"><img src="images/life-infant-discovery.jpg" alt="An infant exploring a soft stuffed animal on the classroom rug" loading="lazy"><figcaption>Discovery in our infant room</figcaption></figure>
-<figure class="life-tile reveal"><img src="images/life-infant-smile.jpg" alt="A smiling infant resting comfortably" loading="lazy"><figcaption>Smiles that make our day</figcaption></figure>
+<figure class="life-tile"><img src="images/life-little-chef.jpg" alt="A toddler stirring a mixing bowl during a hands-on measuring activity" loading="lazy"><figcaption>Little chefs, big learning</figcaption></figure>
+<figure class="life-tile"><img src="images/life-story-time.jpg" alt="A preschooler reading a farm board book on a wooden bench" loading="lazy"><figcaption>A quiet moment with a favorite book</figcaption></figure>
+<figure class="life-tile"><img src="images/life-outdoor-play.jpg" alt="A smiling child at the top of the playground slide" loading="lazy"><figcaption>Outdoor play every day</figcaption></figure>
+<figure class="life-tile"><img src="images/life-infant-discovery.jpg" alt="An infant exploring a soft stuffed animal on the classroom rug" loading="lazy"><figcaption>Discovery in our infant room</figcaption></figure>
+<figure class="life-tile"><img src="images/life-infant-smile.jpg" alt="A smiling infant resting comfortably" loading="lazy"><figcaption>Smiles that make our day</figcaption></figure>
 </div>
 </div></section>
 
@@ -838,6 +838,8 @@ const observer=new IntersectionObserver((entries)=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");observer.unobserve(e.target)}})
 },{threshold:0.15});
 document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+if(!("IntersectionObserver" in window)){document.querySelectorAll(".reveal").forEach(el=>el.classList.add("visible"))}
+window.addEventListener("load",()=>setTimeout(()=>document.querySelectorAll(".reveal").forEach(el=>el.classList.add("visible")),2500));
 </script>
 <div class="mobile-cta">
   <a class="mc-call" href="sms:4698071221"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Text</a>
