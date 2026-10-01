@@ -217,6 +217,10 @@ nav.scrolled{box-shadow:var(--shadow-sm)}
 @media(max-width:960px){.safety-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.safety-grid{grid-template-columns:1fr}}
 
+.home-contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.home-contact-grid>*{min-width:0}
+@media(max-width:860px){.home-contact-grid{grid-template-columns:1fr;gap:32px}}
+
 /* CTA */
 .cta-section{padding:100px 0;background:var(--cream)}
 .cta-inner{text-align:center}
@@ -728,7 +732,7 @@ Proudly serving <strong>Red Oak, Midlothian, Waxahachie, Cedar Hill, Ovilla, Gle
 </div></div></section>
 
 <section class="section" id="contact" style="background:var(--cream)"><div class="container">
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start">
+<div class="home-contact-grid">
 <div class="reveal">
 <span class="section-tag">Contact</span>
 <h2 class="section-title">We&#x2019;d Love to Meet Your Family</h2>
@@ -774,7 +778,7 @@ Proudly serving <strong>Red Oak, Midlothian, Waxahachie, Cedar Hill, Ovilla, Gle
 <footer><div class="container">
 <div class="footer-top">
 <div>
-<img src="" alt="" class="footer-logo-img">
+
 <div class="footer-logo-text">
   <img src="images/bha-logo-footer.png" class="flt-icon" alt="BHA icon" style="opacity:0.9">
   <div>
