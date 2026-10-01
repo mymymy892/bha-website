@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Why We Built Benevolent House Academy | BHA Blog</title>
-<meta name="description" content="When people ask us why we started a childcare center, we do not start with a business plan. We start with our family.">
+<title>Infant Care in Red Oak, TX | Benevolent House Academy</title>
+<meta name="description" content="Infant and young toddler care in Red Oak, TX. One teacher for every 4 infants, Similac 360 Total Care formula and diapers included, safe sleep, and daily Brightwheel photos.">
 <meta name="theme-color" content="#042F59">
-<link rel="canonical" href="https://benevolenthouseacademy.org/blog-2026-03-why-we-built-bha.html">
-<meta property="og:type" content="article">
+<link rel="canonical" href="https://benevolenthouseacademy.org/infant-care.html">
+<meta property="og:type" content="website">
 <meta property="og:site_name" content="Benevolent House Academy">
-<meta property="og:title" content="Why We Built Benevolent House Academy">
-<meta property="og:description" content="When people ask us why we started a childcare center, we do not start with a business plan. We start with our family.">
-<meta property="og:url" content="https://benevolenthouseacademy.org/blog-2026-03-why-we-built-bha.html">
-<meta property="og:image" content="https://benevolenthouseacademy.org/images/blog-our-story.jpg">
+<meta property="og:title" content="Infant Care in Red Oak, TX | Benevolent House Academy">
+<meta property="og:description" content="Infant and young toddler care in Red Oak, TX. One teacher for every 4 infants, Similac 360 Total Care formula and diapers included, safe sleep, and daily Brightwheel photos.">
+<meta property="og:url" content="https://benevolenthouseacademy.org/infant-care.html">
+<meta property="og:image" content="https://benevolenthouseacademy.org/images/og-share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A warm, sunlit childcare classroom">
+<meta property="og:image:alt" content="Benevolent House Academy, licensed early learning center in Red Oak, Texas">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Why We Built Benevolent House Academy">
-<meta name="twitter:description" content="When people ask us why we started a childcare center, we do not start with a business plan. We start with our family.">
-<meta name="twitter:image" content="https://benevolenthouseacademy.org/images/blog-our-story.jpg">
+<meta name="twitter:title" content="Infant Care in Red Oak, TX | Benevolent House Academy">
+<meta name="twitter:description" content="Infant and young toddler care in Red Oak, TX. One teacher for every 4 infants, Similac 360 Total Care formula and diapers included, safe sleep, and daily Brightwheel photos.">
+<meta name="twitter:image" content="https://benevolenthouseacademy.org/images/og-share.jpg">
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,12 +35,15 @@
   --border-light:rgba(27,58,92,0.07);
   --shadow-sm:0 2px 8px rgba(27,58,92,0.06);
   --shadow-md:0 8px 30px rgba(27,58,92,0.08);
-  --r-sm:10px;--r-md:14px;--r-lg:20px
+  --shadow-lg:0 20px 60px rgba(27,58,92,0.1);
+  --r-md:14px;--r-lg:20px
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:'Plus Jakarta Sans',sans-serif;color:var(--text-body);background:var(--warm-white);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 .container{max-width:1180px;margin:0 auto;padding:0 24px}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:none}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#FEFCF8;backdrop-filter:blur(16px);border-bottom:1px solid var(--border-light);transition:box-shadow 0.4s}
@@ -61,49 +64,52 @@ nav.scrolled{box-shadow:var(--shadow-sm)}
 .nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px}
 .nav-toggle span{width:22px;height:2px;background:var(--navy);border-radius:2px;transition:all 0.3s}
 
-/* HERO */
-.page-hero{padding:130px 0 60px;background:var(--navy);text-align:center}
+/* PAGE HERO */
+.page-hero{padding:130px 0 60px;background:var(--navy);text-align:center;position:relative}
 .page-hero h1{font-family:'DM Serif Display',serif;font-size:clamp(32px,4vw,48px);color:white;margin-bottom:12px}
 .page-hero p{font-size:16px;color:rgba(255,255,255,0.65);max-width:560px;margin:0 auto;line-height:1.7}
 
-/* BLOG */
-.blog-section{padding:80px 0}
-.blog-container{max-width:800px;margin:0 auto}
+/* SECTION */
+.section{padding:80px 0}
+.section-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.section-title{font-family:'DM Serif Display',serif;font-size:clamp(26px,3vw,36px);color:var(--navy);line-height:1.2;margin-bottom:14px}
+.section-desc{font-size:16px;color:var(--text-soft);line-height:1.7;max-width:680px;margin-bottom:36px}
+.text-center{text-align:center}
+.text-center .section-desc{margin-left:auto;margin-right:auto}
+.section-alt{background:var(--cream)}
 
-/* FEATURED POST */
-.featured-post{margin-bottom:60px}
-.featured-img{width:100%;height:360px;border-radius:var(--r-lg);overflow:hidden;margin-bottom:24px;background:var(--cream);display:flex;align-items:center;justify-content:center}
-.featured-img img{width:100%;height:100%;object-fit:cover}
-.featured-img .placeholder-img{color:var(--text-soft);font-size:14px;text-align:center;padding:20px}
-.post-meta{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
-.post-date{font-size:13px;color:var(--text-soft)}
-.post-tag{font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px;background:var(--gold-pale);color:var(--gold);letter-spacing:0.5px;text-transform:uppercase}
-.post-title{font-family:'DM Serif Display',serif;font-size:clamp(26px,3vw,34px);color:var(--navy);line-height:1.25;margin-bottom:16px}
-.post-excerpt{font-size:16px;color:var(--text-soft);line-height:1.8;margin-bottom:20px}
-.post-body{font-size:15.5px;color:var(--text-body);line-height:1.85}
-.post-body p{margin-bottom:18px}
-.post-body p:last-child{margin-bottom:0}
-.post-author{display:flex;align-items:center;gap:14px;margin-top:32px;padding-top:24px;border-top:1px solid var(--border-light)}
-.author-avatar{width:48px;height:48px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-family:'DM Serif Display',serif;font-size:18px}
-.author-info{font-size:14px}
-.author-info strong{color:var(--navy);display:block;margin-bottom:2px}
-.author-info span{color:var(--text-soft)}
+/* MISSION */
+.mission-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:40px}
+.mission-card{background:white;border-radius:var(--r-md);padding:32px 24px;border:1px solid var(--border-light);text-align:center;transition:all 0.4s}
+.mission-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--gold-light)}
+.mission-icon{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px}
+.mission-card:nth-child(1) .mission-icon{background:var(--sage-light)}
+.mission-card:nth-child(2) .mission-icon{background:var(--gold-pale)}
+.mission-card:nth-child(3) .mission-icon{background:rgba(27,58,92,0.06)}
+.mission-card h3{font-family:'DM Serif Display',serif;font-size:18px;color:var(--navy);margin-bottom:8px}
+.mission-card p{font-size:14px;color:var(--text-soft);line-height:1.65}
 
-/* RECENT POSTS PLACEHOLDER */
-.more-posts{margin-top:60px;padding-top:48px;border-top:2px solid var(--cream)}
-.more-posts h2{font-family:'DM Serif Display',serif;font-size:24px;color:var(--navy);margin-bottom:24px;text-align:center}
-.coming-soon-box{background:var(--cream);border-radius:var(--r-md);padding:40px;text-align:center}
-.coming-soon-box p{font-size:15px;color:var(--text-soft);line-height:1.7}
-.coming-soon-box a{color:var(--gold);font-weight:600;text-decoration:none}
+/* WHY */
+.why-content{max-width:780px;margin:0 auto}
+.why-content p{font-size:16px;color:var(--text-soft);line-height:1.8;margin-bottom:20px}
+.why-content p:last-child{margin-bottom:0}
+
+/* BIOS */
+.bio-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px}
+.bio-card{background:white;border-radius:var(--r-lg);padding:40px 32px;border:1px solid var(--border-light);text-align:center}
+.bio-avatar{width:100px;height:100px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px;color:var(--gold-light);font-family:'DM Serif Display',serif}
+.bio-card h3{font-family:'DM Serif Display',serif;font-size:22px;color:var(--navy);margin-bottom:4px}
+.bio-card .bio-role{font-size:13px;font-weight:600;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.bio-card p{font-size:14.5px;color:var(--text-soft);line-height:1.7}
 
 /* CTA */
 .cta-section{padding:80px 0;background:var(--navy)}
 .cta-inner{text-align:center}
-.cta-inner h2{font-family:'DM Serif Display',serif;font-size:clamp(26px,3vw,36px);color:white;margin-bottom:14px}
+.cta-inner .section-title{color:white}
 .cta-inner p{color:rgba(255,255,255,0.65);font-size:16px;line-height:1.7;max-width:480px;margin:0 auto 36px}
 .cta-buttons{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
 .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:white;padding:15px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;transition:all 0.3s}
-.btn-primary:hover{background:var(--gold-warm);transform:translateY(-2px)}
+.btn-primary:hover{background:var(--gold-warm);transform:translateY(-2px);box-shadow:0 8px 20px rgba(197,150,12,0.3)}
 .btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:white;padding:15px 28px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;transition:all 0.3s;border:2px solid rgba(255,255,255,0.2)}
 .btn-outline:hover{border-color:white;transform:translateY(-2px)}
 
@@ -129,13 +135,15 @@ footer{background:var(--navy-deep);padding:64px 0 28px;color:rgba(255,255,255,0.
 .footer-social a:hover{color:var(--gold-light)}
 .footer-social svg{width:18px;height:18px;fill:currentColor}
 
+/* RESPONSIVE */
 @media(max-width:768px){
   .nav-links{display:none;position:absolute;top:88px;left:0;right:0;background:white;flex-direction:column;padding:16px 24px;border-bottom:1px solid var(--border-light);box-shadow:var(--shadow-md)}
   .nav-links.active{display:flex}
   .nav-toggle{display:flex}
   .nav-logo-name{font-size:18px}
   .nav-logo-slogan{font-size:8px;letter-spacing:1.5px}
-  .featured-img{height:240px}
+  .mission-grid{grid-template-columns:1fr}
+  .bio-grid{grid-template-columns:1fr}
   .footer-top{grid-template-columns:1fr}
 }
 
@@ -160,26 +168,25 @@ body{padding-top:38px}
 @media(prefers-reduced-motion:reduce){.ann-msg{transition:none}}
 @media(min-width:961px) and (max-width:1220px){.nav-phone{display:none!important}.nav-logo-name{font-size:22px!important}.nav-logo-icon-wrap,.nav-logo-icon-wrap img{width:48px!important;height:48px!important}}
 
-/* Blog list and post pages */
-.post-list{display:grid;grid-template-columns:1fr 1fr;gap:28px}
-.post-card{background:white;border:1px solid var(--border-light);border-radius:var(--r-lg);overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:all .35s}
-.post-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
-.post-card img{width:100%;height:210px;object-fit:cover;display:block}
-.post-card-body{padding:22px 22px 26px;display:flex;flex-direction:column;gap:10px;flex:1}
-.post-card h2{font-family:'DM Serif Display',serif;font-size:21px;color:var(--navy);line-height:1.3;font-weight:400}
-.post-card p{font-size:14.5px;color:var(--text-soft);line-height:1.7;flex:1}
-.post-card .read-more{font-size:13.5px;font-weight:700;color:var(--gold)}
-.post-card.featured{grid-column:1/-1;display:grid;grid-template-columns:1.1fr 1fr}
-.post-card.featured img{height:100%;min-height:300px}
-.post-card.featured h2{font-size:28px}
-.post-body h3{font-family:'DM Serif Display',serif;font-size:22px;color:var(--navy);font-weight:400;margin:30px 0 10px}
-.post-body a{color:var(--navy);font-weight:700}
-.post-nav{display:flex;justify-content:space-between;gap:16px;margin-top:40px;flex-wrap:wrap}
-.post-nav a{font-size:14px;font-weight:700;color:var(--navy);text-decoration:none;padding:12px 18px;border:1px solid var(--border-light);border-radius:10px;background:white}
-.post-nav a:hover{border-color:var(--gold)}
-.page-hero .post-meta{justify-content:center;margin-top:14px}
-.page-hero .post-date{color:rgba(255,255,255,.7)}
-@media(max-width:760px){.post-list{grid-template-columns:1fr}.post-card.featured{grid-template-columns:1fr}.post-card.featured img{min-height:0;height:220px}}
+/* Round 3 shared page styles */
+.lead-wrap{max-width:760px;margin:0 auto}
+.check-list{list-style:none;display:grid;gap:12px;margin:18px 0}
+.check-list li{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.65;color:var(--text-body)}
+.check-list li::before{content:"\2713";flex:0 0 26px;height:26px;border-radius:8px;background:var(--sage-light);color:var(--sage);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:1px}
+.rate-box{background:white;border:1px solid var(--border-light);border-radius:var(--r-lg);padding:26px;box-shadow:var(--shadow-sm)}
+.rate-row{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--border-light);font-size:15px}
+.rate-row:last-child{border-bottom:none}
+.rate-row strong{color:var(--navy);white-space:nowrap}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.pill-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:22px}
+.pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:white;border-radius:100px;padding:8px 16px;font-size:13px;font-weight:600}
+.day-list{display:grid;gap:14px}
+.day-item{display:grid;grid-template-columns:110px 1fr;gap:16px;background:white;border:1px solid var(--border-light);border-radius:var(--r-md);padding:16px 18px}
+.day-item b{color:var(--gold);font-size:13px;letter-spacing:1px;text-transform:uppercase}
+.day-item p{font-size:14.5px;line-height:1.65;color:var(--text-body)}
+.checkbox-row{display:flex;flex-wrap:wrap;gap:10px}
+.checkbox-row label{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:var(--text-body);background:var(--cream);border:1px solid var(--border-light);padding:8px 12px;border-radius:8px;cursor:pointer}
+@media(max-width:860px){.two-col{grid-template-columns:1fr;gap:32px}.day-item{grid-template-columns:1fr;gap:4px}}
 </style>
 </head>
 <body>
@@ -206,8 +213,8 @@ body{padding-top:38px}
     <li><a href="index.html">Home</a></li>
     <li><a href="about.html">About</a></li>
     <li><a href="programs.html">Programs</a></li>
-    <li><a href="infant-care.html">Infant Care</a></li>
-    <li><a href="blog.html" style="color:var(--gold)">Blog</a></li>
+    <li><a href="infant-care.html" style="color:var(--gold)">Infant Care</a></li>
+    <li><a href="blog.html">Blog</a></li>
     <li><a href="faq.html">FAQ</a></li>
     <li><a href="contact.html">Contact</a></li>
     <li><a href="es.html" lang="es">Espa&ntilde;ol</a></li>
@@ -217,59 +224,82 @@ body{padding-top:38px}
 </div>
 </nav>
 
-<!-- HERO -->
+<!-- PAGE HERO -->
 <section class="page-hero">
 <div class="container">
-  <h1>Why We Built Benevolent House Academy</h1>
-  <div class="post-meta"><span class="post-tag">Our Story</span><span class="post-date">March 2026</span></div>
+  <h1>Infant Care in Red Oak</h1>
+  <p>Gentle, responsive care for babies from 6 weeks to 17 months, in our Seedlings and Discoverers classrooms.</p>
+  <div class="pill-row"><span class="pill">1 teacher for every 4 infants</span><span class="pill">Formula &amp; diapers included</span><span class="pill">Daily photos in Brightwheel</span></div>
 </div>
 </section>
 
-<!-- BLOG -->
-<section class="blog-section">
+<section class="section">
 <div class="container">
-<div class="blog-container">
-<article class="featured-post">
-  <div class="featured-img">
-    <img src="images/blog-our-story.jpg" alt="A warm, sunlit childcare classroom">
-  </div>
-  <div class="post-body">
-    <p>When people ask us why we started a childcare center, we do not start with a business plan. We start with our family.</p>
-    <p>As parents of nine children and a family shaped by foster care and adoption, we have spent years searching for childcare that truly understood our kids. Care that did not just watch them, but saw them. Care that met them where they were, not where a checklist said they should be.</p>
-    <p>We found wonderful people along the way. But we also found gaps. Centers that closed at 6 PM when our work did not. Programs that were not designed for children who carried big emotions or came from complicated beginnings. Environments that did not always reflect the kind of family we are.</p>
-    <p>So we built what we wished had existed.</p>
-    <p>Benevolent House Academy is not just a childcare center. It is a place where every child, from every family, every background, and every circumstance, has a space where they are truly known. Where the day starts with connection, not just attendance. Where character matters as much as ABCs. Where families like ours, and families nothing like ours, all feel at home.</p>
-    <p>Opening this spring at 508 N State Hwy 342 in Red Oak, Texas, BHA will welcome children from 6 weeks old, with care built around connection, character, and a team that genuinely believes in the work.</p>
-    <p>This blog is where we will share our journey. The progress, the lessons, the behind-the-scenes moments of building something from the ground up. We hope you will follow along, and when the time is right, we hope you will trust us with your child.</p>
-    <p>Because every child deserves a place where foundations become futures.</p>
-  </div>
-  <div class="post-author">
-    <div class="author-avatar">TO</div>
-    <div class="author-info">
-      <strong>Tanya Orr</strong>
-      <span>Founder &amp; Executive Director, Benevolent House Academy</span>
+  <div class="two-col">
+    <div>
+      <span class="section-tag">Why Families Choose BHA</span>
+      <h2 class="section-title">Trusting Someone With Your Baby Is a Big Step</h2>
+      <p style="font-size:15.5px;color:var(--text-soft);line-height:1.8">We know, because we are parents too. Our infant rooms are built around one promise: your baby will be known, held, and cared for the way you would care for them yourself.</p>
+      <ul class="check-list">
+        <li><span><strong>Small groups.</strong> One teacher for every 4 infants (6 to 11 months) and one for every 5 young toddlers (12 to 17 months).</span></li>
+        <li><span><strong>Your baby&#x2019;s schedule, not ours.</strong> Babies are fed on demand and nap when they are tired, following the feeding plan you write with us and update each month.</span></li>
+        <li><span><strong>Safe sleep, every time.</strong> Infants always sleep on their backs in bare cribs, following safe sleep guidelines.</span></li>
+        <li><span><strong>Formula and diapers included.</strong> We provide Similac 360 Total Care formula, plus diapers and wipes. No supply runs before work.</span></li>
+        <li><span><strong>See their day.</strong> Brightwheel updates and photos let you see feedings, naps, diapers, and smiles while you are at work.</span></li>
+        <li><span><strong>Fresh air.</strong> Our babies enjoy stroller walks on our walking path, as the weather allows.</span></li>
+      </ul>
+    </div>
+    <div>
+      <img src="images/life-infant-smile.jpg" alt="A smiling infant in the Seedlings room" style="width:100%;border-radius:var(--r-lg);box-shadow:var(--shadow-md);aspect-ratio:4/5;object-fit:cover">
     </div>
   </div>
-</article>
-<div class="post-nav"><span></span><a href="blog-2026-04-getting-ready.html">Getting Ready: The Final Weeks Before Opening &rarr;</a></div>
-<p style="text-align:center;margin-top:28px"><a href="blog.html" style="color:var(--gold);font-weight:700;text-decoration:none">&larr; Back to All Posts</a></p>
-</div>
 </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-section">
+<section class="section section-alt">
 <div class="container">
-<div class="cta-inner">
-  <h2>Ready to Join the BHA Family?</h2>
-  <p>Enrollment is open for all age groups. We would love to hear from you.</p>
-  <div class="cta-buttons">
-    <a href="enroll.html" class="btn-primary">Enroll Now &#x2192;</a>
-    <a href="contact.html" class="btn-outline">Contact Us</a>
+  <div class="text-center">
+    <span class="section-tag">Peace of Mind</span>
+    <h2 class="section-title">Safety You Can See</h2>
+  </div>
+  <div class="lead-wrap">
+    <ul class="check-list">
+      <li>Cameras record in every classroom and around the full perimeter of our building</li>
+      <li>Our front and back doors stay locked at all times</li>
+      <li>Children are released only to authorized adults, with photo ID at every pickup</li>
+      <li>Every team member is background checked and trained in CPR and first aid</li>
+      <li>We are an egg and nut free facility</li>
+      <li>Licensed by the Texas Health and Human Services Commission</li>
+    </ul>
   </div>
 </div>
+</section>
+
+<section class="section">
+<div class="container">
+  <div class="two-col">
+    <div>
+      <span class="section-tag">Tuition</span>
+      <h2 class="section-title">Simple Weekly Rates</h2>
+      <div class="rate-box">
+        <div class="rate-row"><span>Infant (6 weeks to 11 months)</span><strong>$290 / week</strong></div>
+        <div class="rate-row"><span>Young Toddler (12 to 17 months)</span><strong>$275 / week</strong></div>
+      </div>
+      <p style="font-size:14px;color:var(--text-soft);line-height:1.7;margin-top:14px">Full-time, Monday through Friday, 6:00 AM to 6:00 PM. Includes formula, diapers, wipes, meals as your baby grows, and daily Brightwheel updates. TWC child care subsidies accepted. See the full <a href="BHA_Fee_Schedule_2026.pdf" target="_blank" style="color:var(--navy);font-weight:700">fee schedule</a>.</p>
+    </div>
+    <div>
+      <span class="section-tag">Infant Spots Fill Quickly</span>
+      <h2 class="section-title">Expecting? Plan Ahead.</h2>
+      <p style="font-size:15.5px;color:var(--text-soft);line-height:1.8;margin-bottom:24px">Our infant rooms are small on purpose, so spots go fast. If you are expecting, it is never too early to reach out. Book a tour, or send an inquiry and we will hold your place on our infant waitlist.</p>
+      <div class="cta-buttons" style="justify-content:flex-start">
+        <a href="tour.html" class="btn-primary">Book a Tour &#x2192;</a>
+        <a href="enroll.html#form" class="btn-outline" style="color:var(--navy);border:2px solid var(--navy);background:transparent">Join the Infant Waitlist</a>
+      </div>
+    </div>
+  </div>
 </div>
 </section>
+
 
 <!-- FOOTER -->
 <footer><div class="container">
@@ -286,9 +316,9 @@ body{padding-top:38px}
 </div>
 <div class="footer-col">
 <h4>Quick Links</h4>
-<a href="index.html">Home</a><a href="about.html">About Us</a><a href="programs.html">Programs</a>
-<a href="blog.html">Blog</a><a href="enroll.html">Enroll</a><a href="careers.html">Careers</a>
-<a href="faq.html">FAQ</a><a href="resources.html">Resources</a><a href="contact.html">Contact</a><a href="es.html" lang="es">En Espa&ntilde;ol</a>
+<a href="index.html">Home</a><a href="programs.html">Programs</a><a href="about.html">About Us</a>
+<a href="blog.html">Blog</a><a href="enroll.html">Enroll</a>
+<a href="tour.html">Book a Tour</a><a href="careers.html">Careers</a><a href="faq.html">FAQ</a><a href="resources.html">Resources</a><a href="contact.html">Contact</a><a href="es.html" lang="es">En Espa&ntilde;ol</a>
 </div>
 <div class="footer-col">
 <h4>Programs</h4>
@@ -317,11 +347,11 @@ body{padding-top:38px}
 </div></footer>
 
 <script>
-var nb=document.getElementById("navbar");
-window.addEventListener("scroll",function(){nb.classList.toggle("scrolled",window.scrollY>20)});
-var nt=document.getElementById("navToggle"),nl=document.getElementById("navLinks");
-nt.addEventListener("click",function(){nl.classList.toggle("active")});
-nl.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){nl.classList.remove("active")});});
+const nb=document.getElementById("navbar");
+window.addEventListener("scroll",()=>nb.classList.toggle("scrolled",window.scrollY>20));
+const nt=document.getElementById("navToggle"),nl=document.getElementById("navLinks");
+nt.addEventListener("click",()=>nl.classList.toggle("active"));
+nl.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>nl.classList.remove("active")));
 </script>
 <div class="mobile-cta">
   <a class="mc-call" href="sms:4698071221"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Text</a>

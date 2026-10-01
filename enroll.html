@@ -198,12 +198,14 @@ body{padding-top:38px}
 @media(max-width:768px){
   .ann-msg{font-size:12px}
   .mobile-cta{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:1002;background:#042F59;padding:10px 12px calc(10px + env(safe-area-inset-bottom));gap:10px;box-shadow:0 -6px 20px rgba(4,47,89,.18)}
-  .mobile-cta a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 10px;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:15px;text-decoration:none}
+  .mobile-cta a{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:13px 6px;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;text-decoration:none}
+  .mobile-cta .mc-enroll{flex:1.4}
   .mobile-cta .mc-call{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25)}
   .mobile-cta .mc-enroll{background:#E6B532;color:#042F59}
   body{padding-bottom:72px}
 }
 @media(prefers-reduced-motion:reduce){.ann-msg{transition:none}}
+@media(min-width:961px) and (max-width:1220px){.nav-phone{display:none!important}.nav-logo-name{font-size:22px!important}.nav-logo-icon-wrap,.nav-logo-icon-wrap img{width:48px!important;height:48px!important}}
 </style>
 </head>
 <body>
@@ -237,7 +239,7 @@ body{padding-top:38px}
 <div>
   <div class="hero-badge"><span class="hero-badge-dot"></span>Now Enrolling &bull; Openings for Every Age</div>
   <h1>Secure Your Child&#x2019;s <em>Spot</em></h1>
-  <p>Fill out the form below and we will reach out within 24 hours to answer your questions, send the complete fee schedule, and schedule a tour.</p>
+  <p>Fill out the form below and we will reach out within 24 hours to answer your questions, send the complete fee schedule, and schedule a tour. Prefer to visit first? <a href="tour.html" style="color:var(--gold-light);font-weight:700">Book a tour</a>. <span lang="es">&iquest;Habla espa&ntilde;ol? <a href="es.html" style="color:var(--gold-light);font-weight:700">Haga clic aqu&iacute;</a>.</span></p>
   <div class="hero-stats">
     <div class="hero-stat">
       <div class="hero-stat-num">Within 24 hrs</div>
@@ -447,8 +449,8 @@ body{padding-top:38px}
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>Best Time to Contact You <span class="req">*</span></label>
-          <select name="best_contact_time" required>
+          <label>Best Time to Contact You</label>
+          <select name="best_contact_time">
             <option value="" disabled selected>Select a time</option>
             <option>Morning (8am &ndash; 12pm)</option>
             <option>Afternoon (12pm &ndash; 5pm)</option>
@@ -500,8 +502,8 @@ body{padding-top:38px}
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>Anticipated Start Date <span class="req">*</span></label>
-          <input type="date" name="start_date" required>
+          <label>Anticipated Start Date</label>
+          <input type="date" name="start_date">
         </div>
         <div class="form-group">
           <label>Is your child currently enrolled elsewhere?</label>
@@ -583,10 +585,12 @@ body{padding-top:38px}
       <a href="programs.html">Programs</a>
       <a href="about.html">About</a>
       <a href="blog.html">Blog</a>
+      <a href="tour.html">Book a Tour</a>
       <a href="careers.html">Careers</a>
       <a href="faq.html">FAQ</a>
       <a href="resources.html">Resources</a>
       <a href="contact.html">Contact</a>
+      <a href="es.html" lang="es">En Espa&ntilde;ol</a>
       <a href="tel:4698071221">(469) 807-1221</a>
     </div>
   </div>
@@ -610,8 +614,8 @@ function updateChildren(num) {
           <input type="text" name="child_${i}_name" required placeholder="First name">
         </div>
         <div class="form-group" style="margin:0">
-          <label>Date of Birth <span class="req">*</span></label>
-          <input type="date" name="child_${i}_dob" required>
+          <label>Date of Birth (or due date)</label>
+          <input type="date" name="child_${i}_dob">
         </div>
       </div>
       <div class="form-group" style="margin:0">
@@ -662,8 +666,9 @@ document.getElementById('enrollForm').addEventListener('submit', function(e) {
 });
 </script>
 <div class="mobile-cta">
-  <a class="mc-call" href="tel:4698071221"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Call Us</a>
-  <a class="mc-enroll" href="#form">Enroll Now</a>
+  <a class="mc-call" href="sms:4698071221"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Text</a>
+  <a class="mc-call" href="tel:4698071221"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+  <a class="mc-enroll" href="tour.html">Book a Tour</a>
 </div>
 <script>
 (function(){var m=document.querySelectorAll('.ann-msg'),i=0;if(m.length<2)return;

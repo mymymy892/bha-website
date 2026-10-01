@@ -53,7 +53,7 @@ nav.scrolled{box-shadow:var(--shadow-sm)}
 .nav-logo-name{font-family:'DM Serif Display',serif;font-size:28px;line-height:1;color:var(--navy);font-weight:400;white-space:nowrap;letter-spacing:-0.3px}
 .nav-logo-slogan{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold)}
 .nav-links{display:flex;align-items:center;gap:2px;list-style:none}
-.nav-links a{text-decoration:none;color:var(--navy);font-weight:500;font-size:13px;padding:7px 10px;border-radius:8px;transition:all 0.2s;white-space:nowrap}
+.nav-links a{text-decoration:none;color:var(--navy);font-weight:500;font-size:13px;padding:7px 8px;border-radius:8px;transition:all 0.2s;white-space:nowrap}
 .nav-links a:hover{background:rgba(27,58,92,0.04)}
 .nav-cta-link{background:var(--navy)!important;color:white!important;padding:10px 18px!important;border-radius:8px!important;font-weight:700!important;margin-left:4px}
 .nav-cta-link:hover{background:var(--navy-mid)!important;transform:translateY(-1px);box-shadow:0 4px 12px rgba(27,58,92,0.2)}
@@ -151,12 +151,14 @@ body{padding-top:38px}
 @media(max-width:768px){
   .ann-msg{font-size:12px}
   .mobile-cta{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:1002;background:#042F59;padding:10px 12px calc(10px + env(safe-area-inset-bottom));gap:10px;box-shadow:0 -6px 20px rgba(4,47,89,.18)}
-  .mobile-cta a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 10px;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:15px;text-decoration:none}
+  .mobile-cta a{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:13px 6px;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;text-decoration:none}
+  .mobile-cta .mc-enroll{flex:1.4}
   .mobile-cta .mc-call{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25)}
   .mobile-cta .mc-enroll{background:#E6B532;color:#042F59}
   body{padding-bottom:72px}
 }
 @media(prefers-reduced-motion:reduce){.ann-msg{transition:none}}
+@media(min-width:961px) and (max-width:1220px){.nav-phone{display:none!important}.nav-logo-name{font-size:22px!important}.nav-logo-icon-wrap,.nav-logo-icon-wrap img{width:48px!important;height:48px!important}}
 
 /* Blog list and post pages */
 .post-list{display:grid;grid-template-columns:1fr 1fr;gap:28px}
@@ -204,9 +206,11 @@ body{padding-top:38px}
     <li><a href="index.html">Home</a></li>
     <li><a href="about.html">About</a></li>
     <li><a href="programs.html">Programs</a></li>
+    <li><a href="infant-care.html">Infant Care</a></li>
     <li><a href="blog.html" style="color:var(--gold)">Blog</a></li>
     <li><a href="faq.html">FAQ</a></li>
     <li><a href="contact.html">Contact</a></li>
+    <li><a href="es.html" lang="es">Espa&ntilde;ol</a></li>
     <li><a href="tel:4698071221" class="nav-phone"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>(469) 807-1221</a></li>
     <li><a href="enroll.html" class="nav-cta-link">Enroll Now</a></li>
   </ul>
@@ -283,11 +287,11 @@ body{padding-top:38px}
 <h4>Quick Links</h4>
 <a href="index.html">Home</a><a href="about.html">About Us</a><a href="programs.html">Programs</a>
 <a href="blog.html">Blog</a><a href="enroll.html">Enroll</a><a href="careers.html">Careers</a>
-<a href="faq.html">FAQ</a><a href="resources.html">Resources</a><a href="contact.html">Contact</a>
+<a href="faq.html">FAQ</a><a href="resources.html">Resources</a><a href="contact.html">Contact</a><a href="es.html" lang="es">En Espa&ntilde;ol</a>
 </div>
 <div class="footer-col">
 <h4>Programs</h4>
-<a href="programs.html#nursery">Nursery (6 wks &ndash; 11 mo)</a>
+<a href="infant-care.html">Infant Care (6 wks &ndash; 11 mo)</a>
 <a href="programs.html#young-toddler">Young Toddlers (12 &ndash; 17 mo)</a>
 <a href="programs.html#toddler">Toddlers (18 &ndash; 35 mo)</a>
 <a href="programs.html#preschool">Preschool (3 yrs)</a>
@@ -319,8 +323,9 @@ nt.addEventListener("click",function(){nl.classList.toggle("active")});
 nl.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){nl.classList.remove("active")});});
 </script>
 <div class="mobile-cta">
-  <a class="mc-call" href="tel:4698071221"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Call Us</a>
-  <a class="mc-enroll" href="enroll.html">Enroll Now</a>
+  <a class="mc-call" href="sms:4698071221"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Text</a>
+  <a class="mc-call" href="tel:4698071221"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Call</a>
+  <a class="mc-enroll" href="tour.html">Book a Tour</a>
 </div>
 <script>
 (function(){var m=document.querySelectorAll('.ann-msg'),i=0;if(m.length<2)return;
