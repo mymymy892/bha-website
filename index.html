@@ -195,6 +195,15 @@ nav.scrolled{box-shadow:var(--shadow-sm)}
 .flex-badge-num{font-family:'DM Serif Display',serif;font-size:28px;line-height:1;color:white}
 .flex-badge-label{font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.85)}
 
+/* LIFE AT BHA GALLERY */
+.life-section{padding:90px 0;background:var(--cream)}
+.life-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.life-tile{margin:0;border-radius:var(--r-lg);overflow:hidden;background:white;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
+.life-tile img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+.life-tile figcaption{padding:12px 14px 14px;font-size:13px;font-weight:600;color:var(--navy);line-height:1.4}
+@media(max-width:960px){.life-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.life-grid{grid-template-columns:1fr 1fr}.life-tile:last-child{grid-column:span 2}.life-tile:last-child img{aspect-ratio:4/3}}
+
 /* CTA */
 .cta-section{padding:100px 0;background:var(--cream)}
 .cta-inner{text-align:center}
@@ -584,6 +593,21 @@ Proudly serving <strong>Red Oak, Midlothian, Waxahachie, Cedar Hill, Ovilla, Gle
 <div class="flex-badge"><div class="flex-badge-num">24-Hr</div><div class="flex-badge-label">Licensed</div></div>
 </div>
 </div></div></section>
+
+<section class="life-section" id="life-at-bha"><div class="container">
+<div class="reveal" style="text-align:center;margin-bottom:40px">
+<span class="section-tag">Life at BHA</span>
+<h2 class="section-title">A Peek Inside Our Classrooms</h2>
+<p style="font-size:16px;color:var(--text-soft);line-height:1.7;max-width:520px;margin:0 auto">Real moments from real days at Benevolent House Academy.</p>
+</div>
+<div class="life-grid">
+<figure class="life-tile reveal"><img src="images/life-little-chef.jpg" alt="A toddler stirring a mixing bowl during a hands-on measuring activity" loading="lazy"><figcaption>Little chefs, big learning</figcaption></figure>
+<figure class="life-tile reveal"><img src="images/life-story-time.jpg" alt="A preschooler reading a farm board book on a wooden bench" loading="lazy"><figcaption>A quiet moment with a favorite book</figcaption></figure>
+<figure class="life-tile reveal"><img src="images/life-outdoor-play.jpg" alt="A smiling child at the top of the playground slide" loading="lazy"><figcaption>Outdoor play every day</figcaption></figure>
+<figure class="life-tile reveal"><img src="images/life-infant-discovery.jpg" alt="An infant exploring a soft stuffed animal on the classroom rug" loading="lazy"><figcaption>Discovery in our infant room</figcaption></figure>
+<figure class="life-tile reveal"><img src="images/life-infant-smile.jpg" alt="A smiling infant resting comfortably" loading="lazy"><figcaption>Smiles that make our day</figcaption></figure>
+</div>
+</div></section>
 
 <section class="cta-section" id="enroll"><div class="container"><div class="cta-inner reveal">
 <span class="section-tag">Now Enrolling</span>
