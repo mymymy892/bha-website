@@ -319,7 +319,12 @@ body{padding-top:38px}
         <option value="" disabled selected>Select a topic</option>
         <option value="Enrollment">Enrollment inquiry</option>
         <option value="Tour">Schedule a tour</option>
+        <option value="Saturday Care" data-topic="saturday">Saturday or weekend care</option>
         <option value="Tuition/Billing">Tuition or billing question</option>
+        <option value="Child Care Assistance" data-topic="assistance">Child care assistance (TWC)</option>
+        <option value="Medical Form Request" data-topic="medical">Request a medical or medication form</option>
+        <option value="Parent Handbook Request" data-topic="handbook">Request a Parent Handbook copy</option>
+        <option value="Closure Calendar" data-topic="calendar">Closure calendar</option>
         <option value="Careers">Career opportunities</option>
         <option value="General">General question</option>
         <option value="Other">Other</option>
@@ -413,6 +418,15 @@ window.addEventListener("scroll",function(){nb.classList.toggle("scrolled",windo
 const nt=document.getElementById("navToggle"),nl=document.getElementById("navLinks");
 nt.addEventListener("click",function(){nl.classList.toggle("active")});
 nl.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){nl.classList.remove("active")});});
+
+(function(){
+  var t=null;
+  try{t=new URLSearchParams(window.location.search).get('topic')}catch(e){}
+  if(!t)return;
+  var sel=document.querySelector('#contactForm select[name="subject"]');
+  var opt=sel&&sel.querySelector('option[data-topic="'+t.replace(/[^a-z]/g,'')+'"]');
+  if(opt){sel.value=opt.value;document.getElementById('contactForm').scrollIntoView({block:'start'});}
+})();
 
 document.getElementById('contactForm').addEventListener('submit', function(e) {
   e.preventDefault();
