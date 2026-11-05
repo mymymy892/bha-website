@@ -313,6 +313,17 @@ body{padding-top:38px}
 @media(prefers-reduced-motion:reduce){.ann-msg{transition:none}}
 @media(min-width:961px){.nav-links .nav-phone{display:none!important}}
 @media(min-width:961px) and (max-width:1220px){.nav-logo-name{font-size:22px!important}.nav-logo-icon-wrap,.nav-logo-icon-wrap img{width:48px!important;height:48px!important}}
+
+/* ===== BHA videos ===== */
+.bha-vid{position:relative;width:100%;max-width:300px;aspect-ratio:9/16;border-radius:18px;overflow:hidden;background:#042F59;box-shadow:0 14px 34px rgba(4,47,89,.18);margin:0 auto}
+.bha-vid video{width:100%;height:100%;object-fit:cover;display:block;background:#042F59}
+.vid-cap{font-size:13px;font-weight:600;color:var(--navy);text-align:center;margin-top:12px}
+.vid-row{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:1000px;margin:0 auto}
+.vid-card h3{font-family:'DM Serif Display',serif;font-size:20px;color:var(--navy);font-weight:400;text-align:center;margin-top:16px}
+.vid-card p{font-size:14px;color:var(--text-soft);line-height:1.6;text-align:center;max-width:280px;margin:6px auto 0}
+.faq-vid{max-width:240px;margin:16px 0 4px}
+.faq-item.open .faq-answer.has-vid{max-height:1400px}
+@media(max-width:860px){.vid-row{grid-template-columns:1fr;gap:40px}.vid-row .bha-vid{max-width:240px}}
 </style>
 <script type="application/ld+json">
 {
@@ -700,6 +711,19 @@ Proudly serving <strong>Red Oak, Midlothian, Waxahachie, Cedar Hill, Ovilla, Gle
 <figure class="life-tile"><img src="images/life-outdoor-play.jpg" alt="A smiling child at the top of the playground slide" loading="lazy"><figcaption>Outdoor play every day</figcaption></figure>
 <figure class="life-tile"><img src="images/life-infant-discovery.jpg" alt="An infant exploring a soft stuffed animal on the classroom rug" loading="lazy"><figcaption>Discovery in our infant room</figcaption></figure>
 <figure class="life-tile"><img src="images/life-infant-smile.jpg" alt="A smiling infant resting comfortably" loading="lazy"><figcaption>Smiles that make our day</figcaption></figure>
+</div>
+</div></section>
+
+<section class="section" id="see-bha" style="background:var(--warm-white)"><div class="container">
+<div class="reveal" style="text-align:center;margin-bottom:44px">
+<span class="section-tag">See BHA in Action</span>
+<h2 class="section-title">A Few Short Stories From BHA</h2>
+<p style="font-size:16px;color:var(--text-soft);line-height:1.7;max-width:540px;margin:0 auto">Each one is under a minute. Tap to play, with sound on.</p>
+</div>
+<div class="vid-row">
+<div class="vid-card reveal"><div class="bha-vid"><video controls playsinline preload="none" poster="videos/bha-known-and-growing-poster.jpg" aria-label="Known and Growing, our curriculum, in 25 seconds"><source src="videos/bha-known-and-growing.mp4" type="video/mp4"></video></div><h3>Our Curriculum</h3><p>A morning feelings check-in, letters and numbers, and a portfolio home every Friday.</p></div>
+<div class="vid-card reveal"><div class="bha-vid"><video controls playsinline preload="none" poster="videos/bha-saturday-care-poster.jpg" aria-label="A mom&#x2019;s Saturday with BHA Saturday Care"><source src="videos/bha-saturday-care.mp4" type="video/mp4"></video></div><h3>Saturday Care</h3><p>Ages 2 to 10, 9 AM to 5 PM, with lunch and a snack included.</p></div>
+<div class="vid-card reveal"><div class="bha-vid"><video controls playsinline preload="none" poster="videos/bha-child-care-assistance-poster.jpg" aria-label="How child care assistance brought BHA within reach"><source src="videos/bha-child-care-assistance.mp4" type="video/mp4"></video></div><h3>Child Care Assistance</h3><p>BHA accepts Child Care Services (CCS) through Workforce Solutions.</p></div>
 </div>
 </div></section>
 

@@ -206,6 +206,17 @@ body{padding-top:38px}
 @media(prefers-reduced-motion:reduce){.ann-msg{transition:none}}
 @media(min-width:961px){.nav-links .nav-phone{display:none!important}}
 @media(min-width:961px) and (max-width:1220px){.nav-logo-name{font-size:22px!important}.nav-logo-icon-wrap,.nav-logo-icon-wrap img{width:48px!important;height:48px!important}}
+
+/* ===== BHA videos ===== */
+.bha-vid{position:relative;width:100%;max-width:300px;aspect-ratio:9/16;border-radius:18px;overflow:hidden;background:#042F59;box-shadow:0 14px 34px rgba(4,47,89,.18);margin:0 auto}
+.bha-vid video{width:100%;height:100%;object-fit:cover;display:block;background:#042F59}
+.vid-cap{font-size:13px;font-weight:600;color:var(--navy);text-align:center;margin-top:12px}
+.vid-row{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:1000px;margin:0 auto}
+.vid-card h3{font-family:'DM Serif Display',serif;font-size:20px;color:var(--navy);font-weight:400;text-align:center;margin-top:16px}
+.vid-card p{font-size:14px;color:var(--text-soft);line-height:1.6;text-align:center;max-width:280px;margin:6px auto 0}
+.faq-vid{max-width:240px;margin:16px 0 4px}
+.faq-item.open .faq-answer.has-vid{max-height:1400px}
+@media(max-width:860px){.vid-row{grid-template-columns:1fr;gap:40px}.vid-row .bha-vid{max-width:240px}}
 </style>
 </head>
 <body>
@@ -284,10 +295,7 @@ body{padding-top:38px}
       <p>Behind every activity is <strong>Known &amp; Growing</strong>, the curriculum created by Benevolent House Academy and rooted in our mission. It places social-emotional learning and character development at the heart of each day, guiding our daily feelings check-ins, our monthly character traits, letter and early literacy learning, and original books and activities written by our own team. Each Friday, children bring home a portfolio of the week&#x2019;s work so families can see their growth.</p>
       <p>Known &amp; Growing reflects what we most hope for every child: that they are known, valued, and growing in character, confidence, and a love of learning.</p>
     </div>
-    <div class="curriculum-badge">
-      <span class="cb-ages">Infants &ndash; Pre-K</span>
-      <span class="cb-name">Known &amp; Growing</span>
-    </div>
+    <div style="flex-shrink:0;width:250px;max-width:100%"><div class="bha-vid"><video controls playsinline preload="none" poster="videos/bha-known-and-growing-poster.jpg" aria-label="Known and Growing, our curriculum, in 25 seconds"><source src="videos/bha-known-and-growing.mp4" type="video/mp4"></video></div><p class="vid-cap">Known &amp; Growing in 25 seconds</p></div>
   </div>
 </div>
 </section>
@@ -368,6 +376,7 @@ body{padding-top:38px}
       <div class="approach-icon">&#x1F4C5;</div>
       <h3>Weekend Daytime Care</h3>
       <p>Saturday care begins November 7, 2026, from 9:00 AM to 5:00 PM for children ages 2 to 10, at $65 per week for a reserved Saturday spot, with lunch and a snack included. Many Saturdays have a fun theme, with games, crafts, music, and outdoor play. Sunday care (12:00 PM to 6:00 PM) is opening soon. A trusted place for your child while you work the weekend shift.</p>
+      <div style="margin:18px auto 0;max-width:230px"><div class="bha-vid"><video controls playsinline preload="none" poster="videos/bha-saturday-care-poster.jpg" aria-label="A mom&#x2019;s Saturday with BHA Saturday Care"><source src="videos/bha-saturday-care.mp4" type="video/mp4"></video></div></div>
     </div>
     <div class="approach-card">
       <div class="approach-icon">&#x1F319;</div>
